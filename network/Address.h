@@ -17,4 +17,7 @@ public:
     int getPort();
 
     void toString();
+
+    Address(const char * stringAddr);
+    Address();
 };

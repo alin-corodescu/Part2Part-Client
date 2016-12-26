@@ -6,8 +6,17 @@
 #define CLIENT_COMMANDBUILDER_H
 
 
-class CommandBuilder {
+#include "Command.h"
 
+class CommandBuilder {
+private:
+
+public:
+    Command build();
+    void setType(CommandTypes t);
+};
+enum CommandTypes {
+    QUERY
 };
 
 

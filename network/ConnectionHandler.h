@@ -14,8 +14,20 @@ class ConnectionHandler
 {
 private:
     Server server;
+    ConnectionHandler();
 public:
-    int connectToServer(Address a);
+    /**
+     * populates the private member server
+     * inside the object, to be further used
+     * for server communication
+     * @param serverAddress
+     * @return 0 in case of successful connection
+     *         -1 otherwise, errno set appropriately
+     */
+    int connectToServer(Address serverAddress);
 
+    Server& getServer();
+
+    static ConnectionHandler* getInstance();
 
 };

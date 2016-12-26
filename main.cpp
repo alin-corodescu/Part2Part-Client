@@ -1,34 +1,47 @@
 #include <iostream>
 #include "local/io/UserInteractor.h"
 #include "local/storage/Cacher.h"
+#include "network/ConnectionHandler.h"
+#include "local/Publisher.h"
+
 
 using namespace std;
-void setup(const UserInteractor& userInteractor,Cacher*& cacher);
+void setup();
 int main() {
 
-    UserInteractor *userInteractor;
-    Cacher *cacher;
+    UserInteractor *userInteractor = UserInteractor::getInstance();
+    setup();
 
-    userInteractor -> init(); //initialize the user interface
-
-
-
+    userInteractor -> listenForCommands(); //this will listen to from the user;
 
     return 0;
 }
-void setup(const UserInteractor& userInteractor,Cacher*& cacher)
+void setup()
 {
+    UserInteractor *userInteractor = UserInteractor::getInstance();
 
+    userInteractor->init();
     /**
     * TODO: think how to make userInteractor functions very extensible
     */
-    Address serverAddress = userInteractor.requestServerAddress();
+    Address *serverAddress = userInteractor -> requestServerAddress();
 
-    cacher = NULL; //TODO: actual instance, with the server address
+    Cacher *cacher = Cacher::getInstance();
+
+    cacher->setServerIdentifier(*serverAddress);
 
     vector<FileDescription> lastSessionFiles = cacher -> loadFilesFromCache();
 
     //TODO: integrity check here
 
-    
+    ConnectionHandler *connectionHandler;
+    connectionHandler = ConnectionHandler::getInstance();
+
+    //TODO : maybe try-catch
+    connectionHandler -> connectToServer(*serverAddress);
+
+    Publisher *publisher = new Publisher(connectionHandler->getServer());
+
+    publisher->publish(lastSessionFiles); //on a new thread
+
 }

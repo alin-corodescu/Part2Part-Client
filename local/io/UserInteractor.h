@@ -5,6 +5,8 @@
 #ifndef CLIENT_INPUTREQUESTER_H
 #define CLIENT_INPUTREQUESTER_H
 
+#include "../../network/Address.h"
+
 /**
  * interface provided to communicate
  * with the end-user, implementations
@@ -17,6 +19,16 @@ public:
      * to capture and request user input.
      */
     virtual void init() = 0;
+
+    /**
+     * will operate on the main thread,
+     * listening for user input
+     */
+    virtual void listenForCommands() = 0;
+
+    virtual Address* requestServerAddress() = 0;
+
+    static UserInteractor* getInstance();
 };
 
 

@@ -12,9 +12,12 @@
 #define CACHE_LOCATION ".cache"
 class Cacher
 {
-
 public:
-    virtual std::vector<FileDescription> loadFilesFromCache(const Address& serverAdress) = 0;
+    virtual std::vector<FileDescription> loadFilesFromCache() = 0;
 
     virtual void cacheFile(FileDescription) = 0;
+
+    virtual void setServerIdentifier(Address) = 0;
+
+    static Cacher* getInstance();
 };
