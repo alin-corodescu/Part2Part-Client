@@ -15,9 +15,6 @@ public:
     Command build();
     void setType(CommandTypes t);
 };
-enum CommandTypes {
-    QUERY
-};
 
 
 #endif //CLIENT_COMMANDBUILDER_H

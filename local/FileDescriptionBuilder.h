@@ -6,8 +6,11 @@
 #define CLIENT_FILEDESCRIPTIONBUILDER_H
 
 
-class FileDescriptionBuilder {
+#include <FileDescription.h>
 
+class FileDescriptionBuilder {
+public:
+    FileDescription buildFromString(char* string);
 };
 
 

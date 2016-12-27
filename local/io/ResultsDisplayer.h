@@ -6,8 +6,12 @@
 #define CLIENT_RESULTSDISPLAYER_H
 
 
-class ResultsDisplayer {
+#include <FileDescription.h>
+#include <vector>
 
+class ResultsDisplayer {
+public:
+    void display(std::vector<FileDescription>);
 };
 
 

@@ -4,6 +4,7 @@
 
 #include <queue>
 #include "../local/Command.h"
+#include "../local/CommandParser.h"
 
 #ifndef CLIENT_SERVER_H
 #define CLIENT_SERVER_H
@@ -13,6 +14,8 @@
 class Server
 {
 private:
+    CommandParser incomingCommandParser;
+
     int _socketDescriptor;
     std::queue<Command> commandQueue;
     /**
@@ -28,6 +31,8 @@ private:
      */
     void _processCommandQueue();
 
+    void _listenForCommands();
+
 
 public:
     /**
@@ -41,6 +46,8 @@ public:
      * start-up function for the server,
      * on it's own thread, listens for responses
      * and commands from the server
+     * @tag own thread
      */
     void listenForCommands();
 };
+
