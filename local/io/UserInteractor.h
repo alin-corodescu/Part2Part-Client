@@ -6,6 +6,7 @@
 #define CLIENT_INPUTREQUESTER_H
 
 #include "../../network/Address.h"
+#include "ResultsDisplayer.h"
 
 /**
  * interface provided to communicate

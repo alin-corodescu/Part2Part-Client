@@ -3,7 +3,7 @@
 //
 
 #include <queue>
-#include "../local/Command.h"
+#include "Command.h"
 #include "../local/CommandParser.h"
 
 #ifndef CLIENT_SERVER_H

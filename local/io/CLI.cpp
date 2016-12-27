@@ -10,6 +10,7 @@
 using namespace std;
 #include "CLI.h"
 #include "../QueryExecutor.h"
+#include "CommandBuilder.h"
 
 void CLI::init() {
     printf("Welcome to Part2Part!\n");
@@ -70,5 +71,26 @@ void CLI::processQuery() {
     FileDescription query;
     QueryExecutor *executor = new QueryExecutor(query)
     executor->execute();
+
+}
+
+void CLI::processChose() {
+
+    int index;
+    ResultsDisplayer resultsDisplayer;
+    scanf("%d",&index);
+    FileDescription fileDescription;
+    try {
+        fileDescription = resultsDisplayer.getFDForIndex(index);
+    }
+    catch (exception& e){
+        printf("Please try another index\n");
+    }
+
+    CommandBuilder commandBuilder;
+
+    commandBuilder.setType(CommandTypes::FIND);
+
+    commandBuilder.addArgument(fileDescription);
 
 }

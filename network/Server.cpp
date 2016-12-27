@@ -6,7 +6,7 @@
 #include <cstring>
 #include <cstdlib>
 #include "Server.h"
-#include "../local/Command.h"
+#include "Command.h"
 #include "IOWrappers.h"
 
 
