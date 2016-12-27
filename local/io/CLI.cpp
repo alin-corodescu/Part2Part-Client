@@ -11,6 +11,7 @@ using namespace std;
 #include "CLI.h"
 #include "../QueryExecutor.h"
 #include "CommandBuilder.h"
+#include "../../network/ConnectionHandler.h"
 
 void CLI::init() {
     printf("Welcome to Part2Part!\n");
@@ -92,5 +93,11 @@ void CLI::processChose() {
     commandBuilder.setType(CommandTypes::FIND);
 
     commandBuilder.addArgument(fileDescription);
+
+    Command command = commandBuilder.build();
+
+    auto connectionHandler = ConnectionHandler::getInstance();
+
+    connectionHandler->getServer().executeCommand(command);
 
 }
