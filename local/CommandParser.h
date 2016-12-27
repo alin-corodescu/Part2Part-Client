@@ -10,10 +10,12 @@ class CommandParser {
     friend class Server;
 private:
     int socketDescriptor;
+    FileDescription readFileDescription();
 protected:
     CommandParser(int socketDescriptor);
 public:
     void parseResults();
+    void parseRequestFileFrom();
 };
 
 

@@ -27,6 +27,10 @@ void Server::_listenForCommands() {
             incomingCommandParser.parseResults();
         }
 
+        if (!strcmp(command, commandName(CommandTypes::REQUEST))) {
+            incomingCommandParser.parseRequestFileFrom();
+        }
+
         free(command);
 
     }

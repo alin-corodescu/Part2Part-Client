@@ -3,6 +3,7 @@
 //
 
 #include <queue>
+#include <IOWrappers.h>
 #include "Command.h"
 #include "../local/CommandParser.h"
 
@@ -50,4 +51,6 @@ public:
      */
     void listenForCommands();
 };
+
+
 

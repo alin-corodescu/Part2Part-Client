@@ -10,8 +10,24 @@
 #include "CommandParser.h"
 #include "FileDescriptionBuilder.h"
 #include "io/ResultsDisplayer.h"
+#include "../network/Address.h"
 
+FileDescription CommandParser::readFileDescription()
+{
+    FileDescriptionBuilder fileDescriptionBuilder;
+    FileDescription fileDescription;
 
+    unsigned int fdSize;
+    readUInt(socketDescriptor,fdSize);
+    char* fileDescriptionString;
+    readUInt(socketDescriptor,fdSize);
+
+    fileDescriptionString = readString(socketDescriptor,fdSize);
+    fileDescription = fileDescriptionBuilder.buildFromString(fileDescriptionString);
+    free(fileDescriptionString);
+
+    return fileDescription;
+}
 void CommandParser::parseResults() {
     unsigned int number_of_matches;
     unsigned int i;
@@ -22,18 +38,13 @@ void CommandParser::parseResults() {
 
     for (i =0; i < number_of_matches; i++)
     {
-        //begin parsing a new FileDescrption
-        unsigned int size;
-        char* fileDescriptionString;
-        readUInt(socketDescriptor,size);
-
-        fileDescriptionString = readString(socketDescriptor,size);
 
         FileDescription fileDescription;
 
-        fileDescription = fileDescriptionBuilder.buildFromString(fileDescriptionString);
+        fileDescription = readFileDescription();
 
         results.push_back(fileDescription);
+
     }
 
     //pass the results to the results displayer
@@ -41,5 +52,30 @@ void CommandParser::parseResults() {
     ResultsDisplayer resultsDisplayer;
 
     resultsDisplayer.display(results);
+
+}
+
+void CommandParser::parseRequestFileFrom() {
+    FileDescription fileDescription = readFileDescription();
+    unsigned int i;
+    unsigned int numberOfPeers;
+    std::vector<Address> addresses;
+    readUInt(socketDescriptor,numberOfPeers);
+    for (i = 0; i < numberOfPeers; i++)
+    {
+        //12 bytes per adress pair public - private
+        unsigned int publicIP,privateIP;
+        unsigned short publicPort,privatePort;
+        readUInt(socketDescriptor,publicIP);
+        readUShort(socketDescriptor,publicPort);
+        readUInt(socketDescriptor,privateIP);
+        readUShort(socketDescriptor,privatePort);
+
+        Address *a = new Address(publicIP,publicPort,
+                                    privateIP,privatePort);
+
+        addresses.push_back(*a);
+        delete(a);
+    }
 
 }

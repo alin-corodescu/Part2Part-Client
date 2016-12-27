@@ -10,14 +10,30 @@
 class Address
 {
 private:
-    int ipAdress;
-    short port;
+    int privateIP;
+    short privatePort;
+    int publicIP;
+    short publicPort;
 public:
-    int getIpAdress();
-    int getPort();
-
     void toString();
 
+    int getPrivateIP() const {
+        return privateIP;
+    }
+
+    int getPublicIP() const {
+        return publicIP;
+    }
+
+    short getPublicPort() const {
+        return publicPort;
+    }
+
+    short getPrivatePort() const {
+        return privatePort;
+    }
+
     Address(const char * stringAddr);
-    Address();
+    Address(unsigned int publicIP,unsigned short publicPort,
+                unsigned int privateIP,unsigned short privatePort);
 };
