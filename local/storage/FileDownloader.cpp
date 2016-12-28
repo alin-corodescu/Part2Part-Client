@@ -30,5 +30,6 @@ void FileDownloader::download() {
         done += next_block;
     }
     fileWriter->finish();
+    delete fileWriter;
 
 }

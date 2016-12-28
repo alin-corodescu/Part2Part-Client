@@ -3,6 +3,8 @@
 //
 
 #include "PeerConnector.h"
+#include "ConnectionHandler.h"
+#include "DownloadPeer.h"
 
 void PeerConnector::start()
 {
@@ -14,3 +16,21 @@ void PeerConnector::start()
     //create the thread object with _attemptConnections();
     return;
 }
+
+void PeerConnector::_attemptConnections() {
+    //i'm on a new thread, can block if i need to
+    ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
+    int i = 0;
+    for (i = 0; i <addresses.size(); i++)
+    {
+        try{
+            DownloadPeer peer = connectionHandler->connectToPeer(addresses[i]);
+        }
+    }
+}
+
+PeerConnector::PeerConnector(FileDescription fileDescription, std::vector<Address> addresses) {
+    this->fileDescription = fileDescription;
+    this->addresses = addresses;
+}
+

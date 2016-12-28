@@ -14,5 +14,6 @@ set(SOURCE_FILES main.cpp network/ConnectionHandler.h network/Server.h
         local/io/ResultsDisplayer.cpp local/io/ResultsDisplayer.h local/io/UserInteractor.cpp local/io/UserInteractor.h
         local/io/CLI.cpp local/io/CLI.h local/QueryExecutor.cpp local/QueryExecutor.h
         network/Server.cpp local/CommandParser.cpp local/CommandParser.h
-        network/DownloadPeer.cpp network/DownloadPeer.h network/UploadPeer.cpp network/UploadPeer.h)
+        network/DownloadPeer.cpp network/DownloadPeer.h network/UploadPeer.cpp network/UploadPeer.h
+        network/PeerConnector.cpp network/PeerConnector.h)
 add_executable(client ${SOURCE_FILES})

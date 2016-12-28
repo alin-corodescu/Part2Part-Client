@@ -3,13 +3,28 @@
 //
 
 #include "FileReader.h"
+#include "FileUploader.h"
 
 FileReader::FileReader(char *path, FileDescription fileDescription) {
     this ->path = path;
     this->fileDescription = fileDescription;
+    in = new std::istream(path,std::ios::in | std::ios::binary);
 
 }
 
 unsigned int FileReader::nextBlock(char *buffer) {
-    return 0;
+
+    in->read(buffer,BLK_SIZE);
+    //check here for other errors (other than eof or shit);
+    if (!in)
+    {
+        long count = in->gcount();
+        in->clear();
+        return count;
+    }
+    return BLK_SIZE;
+}
+
+void FileReader::finish() {
+    delete in;
 }

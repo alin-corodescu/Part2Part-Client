@@ -7,7 +7,7 @@
 #include "FileUploader.h"
 
 FileUploader::FileUploader(FileReader *reader, int socketDescrpitor) {
-    this->reader =reader;
+    this->reader = reader;
     this->socket = socketDescrpitor;
 }
 
@@ -23,6 +23,7 @@ void FileUploader::upload() {
         writeString(socket,buffer,count);
     }
     while (count);
-
+    reader->finish();
+    delete reader;
 
 }

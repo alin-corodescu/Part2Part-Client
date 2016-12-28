@@ -6,6 +6,10 @@
 #define CLIENT_PEERCONNECTOR_H
 
 
+#include <FileDescription.h>
+#include <vector>
+#include "Address.h"
+
 class PeerConnector {
 private:
     FileDescription fileDescription;
@@ -14,6 +18,10 @@ private:
 public:
     PeerConnector(FileDescription fileDescription,
                     std::vector<Address> addresses);
+
+    /**
+     * will create a new thread which will attempt connections
+     */
     void start();
 };
 

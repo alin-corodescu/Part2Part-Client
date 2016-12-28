@@ -7,10 +7,12 @@
 
 
 #include <FileDescription.h>
+#include <istream>
 
 class FileReader {
     char* path;
     FileDescription fileDescription;
+    std::istream* in;
 public:
     FileReader(char* path,FileDescription fileDescription);
     /**
@@ -19,7 +21,7 @@ public:
      * @return - the number of bytes read
      */
     unsigned int nextBlock(char* buffer);
-
+    void finish();
 };
 
 
