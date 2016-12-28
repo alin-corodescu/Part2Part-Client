@@ -4,6 +4,8 @@
 
 #include "Server.h"
 #include "Address.h"
+#include "PeerConnection.h"
+#include "DownloadPeer.h"
 #include <vector>
 #ifndef CLIENT_CONNECTIONHANDLER_H
 #define CLIENT_CONNECTIONHANDLER_H
@@ -14,7 +16,7 @@ class ConnectionHandler
 {
 private:
     Server server;
-    ConnectionHandler();
+    int publicIP; //maybe i'll use it
 public:
     /**
      * populates the private member server
@@ -25,9 +27,29 @@ public:
      *         -1 otherwise, errno set appropriately
      */
     int connectToServer(Address serverAddress);
+    /**
+     * wii try to connect to both local and
+     * public address
+     * throw exception if he cant
+     * @param a
+     * @return
+     */
+    DownloadPeer * connectToPeer(Address a);
+
+    /**
+     * attempts to traverse the NAT of the peer
+     * @param a
+     * @return
+     */
+    DownloadPeer * attemptNATTraversal(Address a);
 
     Server& getServer();
 
     static ConnectionHandler* getInstance();
+
+    class NATTraversalUtils
+    {
+        
+    };
 
 };

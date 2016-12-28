@@ -35,19 +35,18 @@ void DownloadPeer::listenForCommand() {
     free(command);
 }
 
-void DownloadPeer::_start() {
+int DownloadPeer::_start() {
     //as a downloader, you must make the request first
     //and then listen for TRANSFERRING
-    request();
     try {
+        request();
         listenForCommand();
+        downloadFile();
+        return 0;
     }
     catch (...){
-        return;
+        return -1;
     }
-
-
-    downloadFile();
 }
 
 void DownloadPeer::downloadFile() {

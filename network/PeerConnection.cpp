@@ -9,3 +9,11 @@
 void PeerConnection::_sendCommand(Command command) {
 
 }
+
+void PeerConnection::setSocketDescriptor(int socketDescriptor) {
+    PeerConnection::socketDescriptor = socketDescriptor;
+}
+
+void PeerConnection::setFileDescription(const FileDescription &fileDescription) {
+    PeerConnection::fileDescription = fileDescription;
+}

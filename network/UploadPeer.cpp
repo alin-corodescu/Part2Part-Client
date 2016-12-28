@@ -38,9 +38,16 @@ void UploadPeer::listenForCommand() {
     free(command);
 }
 
-void UploadPeer::_start() {
-    listenForCommand();
-    uploadFile();
+int UploadPeer::_start() {
+    try {
+        listenForCommand();
+        uploadFile();
+        return 0;
+    }
+    catch(...)
+    {
+        return -1;
+    }
 }
 
 void UploadPeer::uploadFile() {

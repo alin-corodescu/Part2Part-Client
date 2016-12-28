@@ -15,13 +15,22 @@
 class PeerConnection {
 protected:
     FileDescription fileDescription;
+public:
+    void setFileDescription(const FileDescription &fileDescription);
+
+protected:
     int socketDescriptor;
+public:
+    void setSocketDescriptor(int socketDescriptor);
+
+protected:
     virtual void _sendCommand(Command command);
     virtual void listenForCommand() = 0;
-    virtual void _start() = 0;
+    virtual int _start() = 0;
 public:
     //will run on a new thread
     virtual void start();
+
 };
 
 

@@ -9,9 +9,11 @@
 #include "PeerConnection.h"
 
 class DownloadPeer : public PeerConnection {
+public:
+    DownloadPeer(int socket);
 
 protected:
-    virtual void _start() override;
+    virtual int _start() override;
     virtual void listenForCommand() override;
 
 private:

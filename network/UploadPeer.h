@@ -14,7 +14,7 @@ private:
 protected:
     virtual void listenForCommand() override;
 
-    virtual void _start() override;
+    virtual int _start() override;
 
     virtual void uploadFile();
 };
