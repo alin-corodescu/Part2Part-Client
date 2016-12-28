@@ -7,7 +7,14 @@
 
 
 class PeerConnector {
-
+private:
+    FileDescription fileDescription;
+    std::vector<Address> addresses;
+    void _attemptConnections();
+public:
+    PeerConnector(FileDescription fileDescription,
+                    std::vector<Address> addresses);
+    void start();
 };
 
 

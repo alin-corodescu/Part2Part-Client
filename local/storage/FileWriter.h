@@ -6,8 +6,18 @@
 #define CLIENT_FILEWRITER_H
 
 
-class FileWriter {
+#include <FileDescription.h>
+#include <fstream>
 
+class FileWriter {
+    char* path;
+    FileDescription fileDescription;
+    std::ofstream* file;
+public:
+    FileWriter(const char* path, FileDescription fileDescription);
+    void createEmptyFile();
+    void append(const char* buffer,int count);
+    void finish();
 };
 
 

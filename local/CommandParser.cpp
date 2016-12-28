@@ -11,6 +11,8 @@
 #include "FileDescriptionBuilder.h"
 #include "io/ResultsDisplayer.h"
 #include "../network/Address.h"
+#include "../network/PeerConnector.h"
+#include "../network/PeerConnection.h"
 
 FileDescription CommandParser::readFileDescription()
 {
@@ -77,5 +79,9 @@ void CommandParser::parseRequestFileFrom() {
         addresses.push_back(*a);
         delete(a);
     }
+
+    PeerConnector *peerConnector = new PeerConnector(fileDescription,addresses);
+
+    peerConnector->start();
 
 }

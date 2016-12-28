@@ -23,11 +23,11 @@ void Server::_listenForCommands() {
 
         command = readString(_socketDescriptor,13);
 
-        if (!strcmp(command, commandName(CommandTypes::RESULTS))) {
+        if (!strcmp(command, commandName(RESULTS))) {
             incomingCommandParser.parseResults();
         }
 
-        if (!strcmp(command, commandName(CommandTypes::REQUEST))) {
+        if (!strcmp(command, commandName(REQUEST))) {
             incomingCommandParser.parseRequestFileFrom();
         }
 

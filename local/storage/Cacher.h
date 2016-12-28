@@ -19,5 +19,14 @@ public:
 
     virtual void setServerIdentifier(Address) = 0;
 
+    // the publisher will need to publish this new file
+    virtual void registerNewFile(FileDescription fileDescription,const char* path);
+
+    /**
+     * returns the path of the file described
+     * @param fileDescription
+     */
+    virtual char* getPathForFile(FileDescription fileDescription);
+
     static Cacher* getInstance();
 };

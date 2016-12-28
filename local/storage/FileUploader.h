@@ -6,8 +6,14 @@
 #define CLIENT_FILEUPLOADER_H
 
 
+#include "FileReader.h"
+#define BLK_SIZE 4096
 class FileUploader {
-
+    FileReader *reader;
+    int socket;
+public:
+    FileUploader(FileReader* reader,int socketDescrpitor);
+    void upload();
 };
 
 

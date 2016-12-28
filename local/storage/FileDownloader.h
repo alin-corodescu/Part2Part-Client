@@ -6,8 +6,15 @@
 #define CLIENT_FILEDOWNLOADER_H
 
 
+#include "FileWriter.h"
+#define BLK_SIZE 4096
 class FileDownloader {
-
+private:
+    FileWriter* fileWriter;
+    int socketDescriptor;
+public:
+    FileDownloader(FileWriter* fileWriter,int socketDescriptor);
+    void download();
 };
 
 
