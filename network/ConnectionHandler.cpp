@@ -4,6 +4,7 @@
 
 
 #include <NetworkWrappers.h>
+#include <netinet/in.h>
 #include "ConnectionHandler.h"
 
 DownloadPeer * ConnectionHandler::connectToPeer(Address a) {
@@ -31,5 +32,6 @@ DownloadPeer * ConnectionHandler::connectToPeer(Address a) {
 }
 
 DownloadPeer * ConnectionHandler::attemptNATTraversal(Address a) {
+
 
 }

@@ -47,9 +47,5 @@ public:
 
     static ConnectionHandler* getInstance();
 
-    class NATTraversalUtils
-    {
-        
-    };
 
 };
