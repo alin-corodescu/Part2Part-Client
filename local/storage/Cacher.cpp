@@ -3,10 +3,32 @@
 //
 
 #include <cstring>
+#include <dirent.h>
 #include "Cacher.h"
 
 std::vector<FileDescription> Cacher::loadFilesFromCache() {
-    return std::vector<FileDescription>();
+    std::vector<FileDescription> files;
+    char path[100] = CACHE_LOCATION;
+    strcat(path,"/");
+
+    DIR* d;
+    d = opendir(CACHE_LOCATION);
+
+    dirent* element = readdir(d);
+    while (element)
+    {
+        if (!strcmp(element->d_name,".")  || !strcmp(element->d_name,"..")) {
+            _removeFileNameFromPath(path);
+            strcat(path,element->d_name);
+            FileDescription fileDescription = readFileDescription(path);
+            files.push_back(fileDescription);
+
+            registerNewFile(fileDescription,path,false);
+        }
+        element = readdir(d);
+    }
+
+    return files;
 }
 
 Cacher *Cacher::getInstance() {
@@ -19,10 +41,10 @@ Cacher::Cacher() {
 
 }
 
-void Cacher::registerNewFile(FileDescription fileDescription, const char *path) {
+void Cacher::registerNewFile(FileDescription fileDescription, const char *path,bool shouldCache) {
     std::string *spath = new std::string(path);
     filePaths.insert(std::make_pair(fileDescription,*spath));
-    cacheFile(fileDescription,path);
+    if (shouldCache) cacheFile(fileDescription,path);
     delete spath;
 
 }
@@ -55,4 +77,14 @@ void Cacher::unregisterFile(FileDescription description) {
 
     remove(path);
     filePaths.erase(description);
+}
+
+void Cacher::_removeFileNameFromPath(char * path) {
+    int lg = strlen(path);
+    int i = lg - 1;
+    while ( i >= 0 )
+    {
+        if (path[i] =='/') break;
+    }
+
 }

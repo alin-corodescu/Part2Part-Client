@@ -18,6 +18,8 @@ private:
     static Cacher* instance = NULL;
     std::map<FileDescription,std::string> filePaths;
     Cacher();
+    void _removeFileNameFromPath(char *);
+    FileDescription readFileDescription(const char* path);
 public:
     std::vector<FileDescription> loadFilesFromCache();
 
@@ -26,7 +28,7 @@ public:
     void setServerIdentifier(Address);
 
     // the publisher will need to publish this new file
-    void registerNewFile(FileDescription fileDescription,const char* path);
+    void registerNewFile(FileDescription fileDescription,const char* path,bool shouldCache = 1);
 
     void unregisterFile(FileDescription description);
 
