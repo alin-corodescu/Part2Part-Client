@@ -39,3 +39,57 @@ void Server::_listenForCommands() {
 
     }
 }
+int Server::getPublicIP() {
+    unsigned int ip;
+    readUInt(_socketDescriptor,ip);
+    return ip;
+}
+
+void Server::_processCommandQueue() {
+    while (connected)
+    {
+        while (!commandQueue.empty())
+        {
+            //obtain the lock
+            Command next = commandQueue.front();
+            commandQueue.pop();
+            _executeCommand(next);
+            //release the lock
+        }
+    }
+}
+
+Server::Server(int socket,Address serverAddress) : address(serverAddress), incomingCommandParser(socket) {
+    this->_socketDescriptor = socket;
+}
+
+void Server::_executeCommand(Command command) {
+    int size;
+    size = command.length();
+    char *string = (char*) malloc(size);
+    command.toString(string);
+    writeString(_socketDescriptor,string, size);
+    free(string);
+
+}
+
+Address Server::listenForOpen() {
+    char* cmd;
+
+    cmd = readString(_socketDescriptor,COMM_LENGTH);
+    if (!strcmp(cmd,"OPEN"))
+    {
+        unsigned int  ip;
+        readUInt(_socketDescriptor, ip);
+        unsigned short port;
+        readUShort(_socketDescriptor,port);
+        return Address(ip,port);
+    }
+    else {
+        throw "Invalid command received";
+    }
+}
+
+Address Server::getAddress() {
+    return address;
+}

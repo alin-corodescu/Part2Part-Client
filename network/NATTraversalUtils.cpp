@@ -52,7 +52,7 @@ void NATTraversalUtils::obtainNATPort(Address &a, int socket) {
     //establish a new connection with the server.
     connectThrough(socket, serverAddress.getPublicIP(),serverAddress.getPublicPort());
 
-    Server *ephemereConnection = new Server(socket);
+    Server *ephemereConnection = new Server(socket,serverAddress);
 
     ephemereConnection->_executeCommand(notification);
 
@@ -116,9 +116,24 @@ void NATTraversalUtils::notify(Address &a, int server) {
     //establish a new connection with the server.
     connectThrough(server, serverAddress.getPublicIP(),serverAddress.getPublicPort());
 
-    Server *ephemereConnection = new Server(server);
+    Server *ephemereConnection = new Server(server,serverAddress);
 
     ephemereConnection->_executeCommand(notification);
 
     delete ephemereConnection;
+}
+
+void NATTraversalUtils::connectThrough(int socket, unsigned int ip, unsigned short port) {
+    struct sockaddr_in endpoint;
+    endpoint.sin_family = AF_INET;
+    endpoint.sin_addr.s_addr = htonl(ip);
+    endpoint.sin_port = htons(port);
+
+    int status = connect(socket,(struct sockaddr*) &endpoint,sizeof(struct sockaddr));
+
+    if (status < 0 )
+    {
+        throw "Connection error";
+    }
+
 }

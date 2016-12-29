@@ -3,3 +3,7 @@
 //
 
 #include "FileDescriptionBuilder.h"
+
+FileDescription FileDescriptionBuilder::buildFromString(char *string) {
+    FileDescription fd;
+}

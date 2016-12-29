@@ -15,10 +15,15 @@
 class ConnectionHandler
 {
 private:
+    static ConnectionHandler* instance = NULL;
     Server* server;
     int publicIP; //maybe i'll use it
     void _acceptNATTraversal(Address& a);
+    ConnectionHandler();
+    void _startService();
+    bool alive;
 public:
+    void startService();
     /**
      * populates the private member server
      * inside the object, to be further used

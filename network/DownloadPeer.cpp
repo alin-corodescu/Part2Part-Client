@@ -55,3 +55,8 @@ void DownloadPeer::downloadFile() {
 
     fileDownloader->download();
 }
+
+DownloadPeer::DownloadPeer(int socket) {
+    this->setSocketDescriptor(socket);
+
+}

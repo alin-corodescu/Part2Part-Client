@@ -5,7 +5,7 @@
 #include "FileReader.h"
 #include "FileUploader.h"
 
-FileReader::FileReader(char *path, FileDescription fileDescription) {
+FileReader::FileReader(const char *path, FileDescription fileDescription) {
     this ->path = path;
     this->fileDescription = fileDescription;
     in = new std::istream(path,std::ios::in | std::ios::binary);

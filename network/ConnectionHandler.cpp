@@ -89,12 +89,18 @@ int ConnectionHandler::connectToServer(Address serverAddress) {
     unsigned int privateIP = getPrivateIP();
     int socket = connectTo(ip,port);
 
-    server = new Server(socket);
+    server = new Server(socket,serverAddress);
+
+    server->processCommandQueue();
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(JOIN);
     commandBuilder.addArgument((unsigned short)LISTENING_PORT);
     commandBuilder.addArgument(privateIP);
+    Command join = commandBuilder.build();
+    server->executeCommand(join);
+    publicIP = server->getPublicIP();
+
     server->listenForCommands();
 
 }
@@ -116,9 +122,62 @@ unsigned int ConnectionHandler::getPrivateIP() {
                 return privateIP;
             }
         }
-
         addrs = addrs->ifa_next;
     }
 
     freeifaddrs(cpy);
+    return 0;
+}
+
+ConnectionHandler *ConnectionHandler::getInstance() {
+    if (instance == NULL)
+        instance = new ConnectionHandler();
+    return instance;
+}
+
+ConnectionHandler::ConnectionHandler() {
+
+}
+
+void ConnectionHandler::_startService() {
+    int listeningSocket;
+    int val = 1;
+
+    listeningSocket = socket(AF_INET,SOCK_PACKET,0);
+    setsockopt(listeningSocket,SOL_SOCKET,SO_REUSEADDR,&val,sizeof(val));
+
+    struct sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port = LISTENING_PORT;
+
+    if (bind(listeningSocket,(struct sockaddr*) &addr,sizeof(struct sockaddr)) == -1)
+    {
+        throw "Bind failed";
+    }
+
+    //now the socket is bound
+
+    while (alive)
+    {
+        int peer;
+        sockaddr_in peer_addr;
+        socklen_t length;
+        peer = accept(listeningSocket,(struct sockaddr*) &peer_addr, &length);
+        if (peer == -1)
+            continue;
+
+        UploadPeer *uploadPeer = new UploadPeer(peer);
+        uploadPeer->start();
+    }
+
+
+
+
+}
+
+void ConnectionHandler::startService() {
+    alive = 1;
+    //TODO: start a thread with _startService here
+
 }

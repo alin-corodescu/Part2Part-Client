@@ -10,11 +10,11 @@
 #include <istream>
 
 class FileReader {
-    char* path;
+    const char* path;
     FileDescription fileDescription;
     std::istream* in;
 public:
-    FileReader(char* path,FileDescription fileDescription);
+    FileReader(const char* path,FileDescription fileDescription);
     /**
      * reads next chunk of the file,
      * @param buffer

@@ -15,10 +15,12 @@
 
 class Server
 { friend class NATTraversalUtils;
+    friend class ConnectionHandler;
 private:
     Address address;
     CommandParser incomingCommandParser;
     int _socketDescriptor;
+    bool connected;
     std::queue<Command> commandQueue;
 protected:
     /**
@@ -62,7 +64,14 @@ public:
 
     Address getAddress();
 
-    Server(int socket);
+    Server(int socket,Address serverAddress);
+
+    int getPublicIP();
+    /**
+     * starts a new thread to process
+     * commands
+     */
+    void processCommandQueue();
 };
 
 

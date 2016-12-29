@@ -14,22 +14,27 @@
 class Cacher
 {
 private:
-    std::map<std::string,FileDescription> filePaths;
+    Address* serverAddr;
+    static Cacher* instance = NULL;
+    std::map<FileDescription,std::string> filePaths;
+    Cacher();
 public:
     std::vector<FileDescription> loadFilesFromCache();
 
-    void cacheFile(FileDescription);
+    void cacheFile(FileDescription,const char*);
 
     void setServerIdentifier(Address);
 
     // the publisher will need to publish this new file
     void registerNewFile(FileDescription fileDescription,const char* path);
 
+    void unregisterFile(FileDescription description);
+
     /**
      * returns the path of the file described
      * @param fileDescription
      */
-    char* getPathForFile(FileDescription fileDescription);
+    const char* getPathForFile(FileDescription fileDescription);
 
     static Cacher* getInstance();
 };

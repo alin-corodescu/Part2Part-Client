@@ -10,7 +10,7 @@
 
 class UploadPeer : public PeerConnection {
 private:
-    char* path;
+    const char* path;
 protected:
     virtual void listenForCommand() override;
 
