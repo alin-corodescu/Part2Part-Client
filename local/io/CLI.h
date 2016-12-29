@@ -13,13 +13,18 @@
  * for debugging purposes mainly
  */
 class CLI : public UserInteractor {
+    friend class UserInteractor;
 private:
+
     void processQuery();
     void processChose();
     void showHelp();
     void processPublishRequest();
     void processUnpublishRequest();
     void proccessDisconnectRequest();
+
+protected:
+    CLI();
 
 public:
     virtual void init() override;

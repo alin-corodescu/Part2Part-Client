@@ -68,3 +68,8 @@ void UploadPeer::uploadFile() {
     uploader->upload();
 
 }
+
+UploadPeer::UploadPeer(int socket) {
+    this->setSocketDescriptor(socket);
+
+}

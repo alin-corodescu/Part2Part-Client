@@ -35,5 +35,5 @@ public:
 
 
     Address(unsigned int publicIP,unsigned short publicPort,
-                unsigned int privateIP = 0,unsigned short  = 0);
+                unsigned int privateIP = 0,unsigned short privatePort = 0);
 };

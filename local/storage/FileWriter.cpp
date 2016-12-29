@@ -22,3 +22,9 @@ void FileWriter::finish()
     Cacher *cacher = Cacher::getInstance();
     cacher->registerNewFile(fileDescription,path);
 }
+
+FileWriter::FileWriter(char *path, FileDescription fileDescription) {
+    this->path = path;
+    this->fileDescription = fileDescription;
+
+}

@@ -4,6 +4,7 @@
 
 #include <FileDescription.h>
 #include <vector>
+#include <map>
 #include "../../network/Address.h"
 
 #ifndef CLIENT_CACHER_H
@@ -12,21 +13,23 @@
 #define CACHE_LOCATION ".cache"
 class Cacher
 {
+private:
+    std::map<std::string,FileDescription> filePaths;
 public:
-    virtual std::vector<FileDescription> loadFilesFromCache() = 0;
+    std::vector<FileDescription> loadFilesFromCache();
 
-    virtual void cacheFile(FileDescription) = 0;
+    void cacheFile(FileDescription);
 
-    virtual void setServerIdentifier(Address) = 0;
+    void setServerIdentifier(Address);
 
     // the publisher will need to publish this new file
-    virtual void registerNewFile(FileDescription fileDescription,const char* path);
+    void registerNewFile(FileDescription fileDescription,const char* path);
 
     /**
      * returns the path of the file described
      * @param fileDescription
      */
-    virtual char* getPathForFile(FileDescription fileDescription);
+    char* getPathForFile(FileDescription fileDescription);
 
     static Cacher* getInstance();
 };

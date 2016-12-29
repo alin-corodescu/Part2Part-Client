@@ -62,7 +62,7 @@ public:
 
     Address getAddress();
 
-    Server(unsigned int socket);
+    Server(int socket);
 };
 
 

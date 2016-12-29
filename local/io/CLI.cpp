@@ -101,3 +101,8 @@ void CLI::processChose() {
     connectionHandler->getServer().executeCommand(command);
 
 }
+
+CLI::CLI() {
+
+
+}

@@ -14,7 +14,7 @@ class FileWriter {
     FileDescription fileDescription;
     std::ofstream* file;
 public:
-    FileWriter(const char* path, FileDescription fileDescription);
+    FileWriter(char* path, FileDescription fileDescription);
     void createEmptyFile();
     void append(const char* buffer,int count);
     void finish();

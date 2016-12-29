@@ -11,11 +11,11 @@
 #define CLIENT_CONNECTIONHANDLER_H
 
 #endif //CLIENT_CONNECTIONHANDLER_H
-
+#define LISTENING_PORT 45678
 class ConnectionHandler
 {
 private:
-    Server server;
+    Server* server;
     int publicIP; //maybe i'll use it
     void _acceptNATTraversal(Address& a);
 public:
@@ -44,11 +44,16 @@ public:
      */
     DownloadPeer * attemptNATTraversal(Address a);
 
+    /**
+     * will call another thread to do it's job
+     * @tag thread
+     * @param a
+     */
     void acceptNATTraversal(Address& a);
 
     Server& getServer();
 
     static ConnectionHandler* getInstance();
 
-
+    unsigned int getPrivateIP();
 };

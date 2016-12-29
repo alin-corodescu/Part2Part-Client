@@ -3,3 +3,16 @@
 //
 
 #include "UserInteractor.h"
+#include "CLI.h"
+
+
+UserInteractor *UserInteractor::getInstance() {
+    if (instance == NULL) {
+        if (type == CMD)
+            instance = new CLI();
+        if (type == GUI)
+            ;
+    }
+
+    return instance;
+}

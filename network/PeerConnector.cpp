@@ -48,7 +48,7 @@ void PeerConnector::_attemptConnections() {
             }
             catch(...)
             {
-
+                continue;
             }
         }
     }

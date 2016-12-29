@@ -14,6 +14,9 @@
  * for other peers to use, as well as unpublish
  */
 class Publisher {
+private:
+    Server server;
+
 public:
     Publisher(Server server);
 

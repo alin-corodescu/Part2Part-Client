@@ -97,3 +97,8 @@ void CommandParser::parseOpenCommand()
 
     ConnectionHandler::getInstance()->acceptNATTraversal(a);
 }
+
+CommandParser::CommandParser(int socketDescriptor) {
+    this->socketDescriptor = socketDescriptor;
+
+}
