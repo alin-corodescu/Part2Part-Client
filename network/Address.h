@@ -10,26 +10,26 @@
 class Address
 {
 private:
-    int privateIP;
-    short privatePort;
-    int publicIP;
-    short publicPort;
+    unsigned int privateIP;
+    unsigned short privatePort;
+    unsigned int publicIP;
+    unsigned short publicPort;
 public:
     void toString();
 
-    int getPrivateIP() const {
+    unsigned int getPrivateIP() const {
         return privateIP;
     }
 
-    int getPublicIP() const {
+    unsigned int getPublicIP() const {
         return publicIP;
     }
 
-    short getPublicPort() const {
+    unsigned short getPublicPort() const {
         return publicPort;
     }
 
-    short getPrivatePort() const {
+    unsigned short getPrivatePort() const {
         return privatePort;
     }
 

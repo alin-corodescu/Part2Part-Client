@@ -6,6 +6,7 @@
 #include <IOWrappers.h>
 #include "Command.h"
 #include "../local/CommandParser.h"
+#include "Address.h"
 
 #ifndef CLIENT_SERVER_H
 #define CLIENT_SERVER_H
@@ -13,19 +14,20 @@
 #endif //CLIENT_SERVER_H
 
 class Server
-{
+{ friend class NATTraversalUtils;
 private:
+    Address address;
     CommandParser incomingCommandParser;
-
     int _socketDescriptor;
     std::queue<Command> commandQueue;
+protected:
     /**
      * function used to send the command
      * to the server
      * NOTE: will NOT release the lock
      * until it receives the confirmation (TBD)
      */
-    void _executeCommand();
+    void _executeCommand(Command command);
     /**
      * function used to pop Commands from the
      * queue and send them to the server
@@ -33,6 +35,13 @@ private:
     void _processCommandQueue();
 
     void _listenForCommands();
+
+    /**
+     * waits to receive an open command from
+     * the server, useful in the case of NAT traversing
+     * @returns the address argument of the open command
+     */
+    Address listenForOpen();
 
 
 public:
@@ -50,6 +59,10 @@ public:
      * @tag own thread
      */
     void listenForCommands();
+
+    Address getAddress();
+
+    Server(unsigned int socket);
 };
 
 

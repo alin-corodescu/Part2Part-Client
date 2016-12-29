@@ -6,6 +6,7 @@
 #include <NetworkWrappers.h>
 #include <netinet/in.h>
 #include "ConnectionHandler.h"
+#include "NATTraversalUtils.h"
 
 DownloadPeer * ConnectionHandler::connectToPeer(Address a) {
     int socketDescriptor;
@@ -31,7 +32,22 @@ DownloadPeer * ConnectionHandler::connectToPeer(Address a) {
     return peer;
 }
 
-DownloadPeer * ConnectionHandler::attemptNATTraversal(Address a) {
+DownloadPeer * ConnectionHandler::attemptNATTraversal(Address a){
 
+    int accepter, requester, server;
+    accepter = NATTraversalUtils::reusableSocket();
+    requester = NATTraversalUtils::reusableSocket();
+    server = NATTraversalUtils::reusableSocket();
 
+    NATTraversalUtils::PORT++; //concurrency problems here
+
+    NATTraversalUtils::obtainNATPort(a, server);
+
+    //in a am acum portul unde B bate,
+
+    int connectedSocket = NATTraversalUtils::holePunch(a, accepter, requester);
+
+    DownloadPeer *peer = new DownloadPeer(connectedSocket);
+
+    return peer;
 }
