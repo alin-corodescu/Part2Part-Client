@@ -17,6 +17,7 @@ class ConnectionHandler
 private:
     Server server;
     int publicIP; //maybe i'll use it
+    void _acceptNATTraversal(Address& a);
 public:
     /**
      * populates the private member server
@@ -42,6 +43,8 @@ public:
      * @return
      */
     DownloadPeer * attemptNATTraversal(Address a);
+
+    void acceptNATTraversal(Address& a);
 
     Server& getServer();
 

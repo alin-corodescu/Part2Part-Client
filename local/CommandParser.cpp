@@ -13,6 +13,7 @@
 #include "../network/Address.h"
 #include "../network/PeerConnector.h"
 #include "../network/PeerConnection.h"
+#include "../network/ConnectionHandler.h"
 
 FileDescription CommandParser::readFileDescription()
 {
@@ -83,5 +84,16 @@ void CommandParser::parseRequestFileFrom() {
     PeerConnector *peerConnector = new PeerConnector(fileDescription,addresses);
 
     peerConnector->start();
+}
 
+void CommandParser::parseOpenCommand()
+{
+    unsigned int ip_addr;
+    unsigned short port;
+    readUInt(socketDescriptor,ip_addr);
+    readUShort(socketDescriptor,port);
+
+    Address a(ip_addr,port);
+
+    ConnectionHandler::getInstance()->acceptNATTraversal(a);
 }

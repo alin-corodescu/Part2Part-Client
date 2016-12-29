@@ -33,7 +33,7 @@ public:
         return privatePort;
     }
 
-    Address(const char * stringAddr);
+
     Address(unsigned int publicIP,unsigned short publicPort,
-                unsigned int privateIP,unsigned short privatePort);
+                unsigned int privateIP = 0,unsigned short  = 0);
 };

@@ -17,6 +17,9 @@ protected:
     virtual int _start() override;
 
     virtual void uploadFile();
+
+public:
+    UploadPeer(int socket);
 };
 
 

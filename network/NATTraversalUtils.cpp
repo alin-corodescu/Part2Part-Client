@@ -68,7 +68,7 @@ int NATTraversalUtils::holePunch(Address peer, int requester, int accepter) {
     peer_addr.sin_addr.s_addr = htonl(peer.getPublicIP());
     peer_addr.sin_port = htons(peer.getPublicPort());
 
-    int connectedSocket;
+    int connectedSocket = -1;
 
     fd_set readfds;   /* multimea descriptorilor de citire */
     fd_set actfds;
@@ -97,6 +97,28 @@ int NATTraversalUtils::holePunch(Address peer, int requester, int accepter) {
             break;
         }
     }
-    
+
     return connectedSocket;
+}
+
+void NATTraversalUtils::notify(Address &a, int server) {
+    unsigned int  ip = a.getPublicIP();
+    //establish ephemere server connection
+    ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
+    Address serverAddress =  connectionHandler->getServer().getAddress();
+
+    CommandBuilder commandBuilder;
+    commandBuilder.setType(NOTIFIY);
+    commandBuilder.addArgument(ip);
+
+    Command notification = commandBuilder.build();
+
+    //establish a new connection with the server.
+    connectThrough(server, serverAddress.getPublicIP(),serverAddress.getPublicPort());
+
+    Server *ephemereConnection = new Server(server);
+
+    ephemereConnection->_executeCommand(notification);
+
+    delete ephemereConnection;
 }

@@ -16,6 +16,7 @@ protected:
 public:
     void parseResults();
     void parseRequestFileFrom();
+    void parseOpenCommand();
 };
 
 

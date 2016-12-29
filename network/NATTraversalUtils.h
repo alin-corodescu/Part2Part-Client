@@ -16,7 +16,15 @@ public:
 
     static int reusableSocket();
 
+    /**
+     * obtaints the new address used for hole punching
+     * using the socket to communicate with the server
+     * @param a
+     * @param socket
+     */
     static void obtainNATPort(Address &a, int socket);
+
+    static void notify(Address &a, int server);
 
     static void connectThrough(int socket,unsigned int ip,unsigned short port);
 
