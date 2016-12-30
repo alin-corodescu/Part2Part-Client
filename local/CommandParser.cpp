@@ -2,7 +2,6 @@
 // Created by alin on 12/27/16.
 //
 
-#pragma once
 
 #include <IOWrappers.h>
 #include <FileDescription.h>

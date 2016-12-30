@@ -1,10 +1,12 @@
 //
 // Created by alin on 12/29/16.
 //
-#pragma once
+
 #include <cstring>
 #include <dirent.h>
 #include "Cacher.h"
+
+Cacher* Cacher::instance = NULL;
 
 std::vector<FileDescription> Cacher::loadFilesFromCache() {
     std::vector<FileDescription> files;

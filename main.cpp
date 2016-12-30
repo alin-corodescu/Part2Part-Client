@@ -1,4 +1,4 @@
-#pragma once
+
 #include <iostream>
 #include "local/io/UserInteractor.h"
 #include "local/storage/Cacher.h"

@@ -1,7 +1,6 @@
 //
 // Created by alin on 12/26/16.
 //
-#pragma once
 #include <cstdio>
 #include <cstring>
 #include <string>

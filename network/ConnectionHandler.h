@@ -15,7 +15,7 @@
 class ConnectionHandler
 {
 private:
-    static ConnectionHandler* instance = NULL;
+    static ConnectionHandler* instance;
     Server* server;
     int publicIP; //maybe i'll use it
     void _acceptNATTraversal(Address& a);

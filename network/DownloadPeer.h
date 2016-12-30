@@ -10,7 +10,7 @@
 
 class DownloadPeer : public PeerConnection {
 public:
-    DownloadPeer(int socket);
+    DownloadPeer(int socket, FileDescription* fileDescription = NULL);
 
 protected:
     virtual int _start() override;

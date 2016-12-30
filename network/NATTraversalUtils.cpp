@@ -1,7 +1,6 @@
 //
 // Created by alin on 12/28/16.
 //
-#pragma once
 #include <CommandBuilder.h>
 #include <NetworkWrappers.h>
 #include <unistd.h>
@@ -12,6 +11,8 @@
 
 #define RETRY_LIMIT 5
 #define RETRY_INTERVAL 1
+
+unsigned short NATTraversalUtils::PORT = START_PORT;
 
 int NATTraversalUtils::reusableSocket() {
     int optval = 1;

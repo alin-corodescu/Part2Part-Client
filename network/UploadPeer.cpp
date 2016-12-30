@@ -1,7 +1,6 @@
 //
 // Created by alin on 12/28/16.
 //
-#pragma once
 #include <IOWrappers.h>
 #include <cstring>
 #include <Command.h>
@@ -30,11 +29,11 @@ void UploadPeer::listenForCommand() {
     fdString = readString(socketDescriptor,size);
     FileDescriptionBuilder fileDescriptionBuilder;
 
-    fileDescription = fileDescriptionBuilder.buildFromString(fdString);
+    fileDescription = new FileDescription(fileDescriptionBuilder.buildFromString(fdString));
     free(fdString);
 
     Cacher *cacher = Cacher::getInstance();
-    path = cacher->getPathForFile(fileDescription);
+    path = cacher->getPathForFile(*fileDescription);
     free(command);
 }
 
@@ -52,7 +51,7 @@ int UploadPeer::_start() {
 
 void UploadPeer::uploadFile() {
     //i have path, and file Description loaded.
-    int size = fileDescription.getFileSize();
+    int size = fileDescription->getFileSize();
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(TRANSFERRING);
@@ -62,14 +61,13 @@ void UploadPeer::uploadFile() {
 
     _sendCommand(transfer);
 
-    FileReader *reader = new FileReader(path,fileDescription);
+    FileReader *reader = new FileReader(path,*fileDescription);
     FileUploader *uploader = new FileUploader(reader,socketDescriptor);
 
     uploader->upload();
 
 }
 
-UploadPeer::UploadPeer(int socket) {
+UploadPeer::UploadPeer(int socket) : PeerConnection() {
     this->setSocketDescriptor(socket);
-
 }

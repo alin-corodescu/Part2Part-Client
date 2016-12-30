@@ -8,11 +8,12 @@
 
 #include <FileDescription.h>
 #include <istream>
+#include <fstream>
 
 class FileReader {
     const char* path;
     FileDescription fileDescription;
-    std::istream* in;
+    std::ifstream in;
 public:
     FileReader(const char* path,FileDescription fileDescription);
     /**

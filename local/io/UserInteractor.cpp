@@ -1,11 +1,10 @@
 //
 // Created by alin on 12/21/16.
 //
-#pragma once
 #include "UserInteractor.h"
 #include "CLI.h"
 
-
+UserInteractor* UserInteractor::instance = NULL;
 UserInteractor *UserInteractor::getInstance() {
     if (instance == NULL) {
         if (type == CMD)

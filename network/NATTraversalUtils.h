@@ -12,7 +12,7 @@
 #define START_PORT 5000
 class NATTraversalUtils {
 public:
-    static unsigned short PORT = START_PORT;
+    static unsigned short PORT;
 
     static int reusableSocket();
 

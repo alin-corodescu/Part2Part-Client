@@ -19,9 +19,9 @@
 class UserInteractor {
     friend class CLI;
 private:
-    static UserInteractor* instance = NULL;
+    static UserInteractor* instance;
 public:
-    static int type = CMD;
+    static const int type = CMD;
     /**
      * function used to build the GUI, and prepare
      * to capture and request user input.

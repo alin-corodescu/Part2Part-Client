@@ -12,9 +12,10 @@
  */
 class PeerConnection {
 protected:
-    FileDescription fileDescription;
+    FileDescription *fileDescription;
 public:
     void setFileDescription(const FileDescription &fileDescription);
+    PeerConnection(FileDescription* fileDescription = NULL);
 
 protected:
     int socketDescriptor;

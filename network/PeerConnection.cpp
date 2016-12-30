@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/21/16.
 //
-#pragma once
+
 #include <CommandBuilder.h>
 #include "PeerConnection.h"
 
@@ -15,5 +15,11 @@ void PeerConnection::setSocketDescriptor(int socketDescriptor) {
 }
 
 void PeerConnection::setFileDescription(const FileDescription &fileDescription) {
-    PeerConnection::fileDescription = fileDescription;
+    PeerConnection::fileDescription = new FileDescription(fileDescription);
+}
+
+PeerConnection::PeerConnection(FileDescription *fileDescription) {
+    if (fileDescription != NULL)
+        this->fileDescription = new FileDescription(*fileDescription);
+
 }

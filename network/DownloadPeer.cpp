@@ -1,7 +1,6 @@
 //
 // Created by alin on 12/28/16.
 //
-#pragma once
 #include <Command.h>
 #include <cstring>
 #include <cstdlib>
@@ -16,7 +15,7 @@ void DownloadPeer::request() {
     CommandBuilder commandBuilder;
 
     commandBuilder.setType(PROVIDE);
-    commandBuilder.addArgument(&fileDescription);
+    commandBuilder.addArgument(fileDescription);
     Command request = commandBuilder.build();
 
     _sendCommand(request);
@@ -50,13 +49,12 @@ int DownloadPeer::_start() {
 }
 
 void DownloadPeer::downloadFile() {
-    FileWriter *fileWriter = new FileWriter(dst,fileDescription);
+    FileWriter *fileWriter = new FileWriter(dst,*fileDescription);
     FileDownloader *fileDownloader = new FileDownloader(fileWriter,socketDescriptor);
 
     fileDownloader->download();
 }
 
-DownloadPeer::DownloadPeer(int socket) {
+DownloadPeer::DownloadPeer(int socket,FileDescription *fileDescription) : PeerConnection(fileDescription) {
     this->setSocketDescriptor(socket);
-
 }

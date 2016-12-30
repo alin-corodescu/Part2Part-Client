@@ -1,7 +1,6 @@
 //
 // Created by alin on 12/27/16.
 //
-#pragma once
 #include "PeerConnector.h"
 #include "ConnectionHandler.h"
 #include "DownloadPeer.h"

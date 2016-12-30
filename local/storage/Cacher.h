@@ -5,6 +5,7 @@
 #include <FileDescription.h>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include "../../network/Address.h"
 
 #ifndef CLIENT_CACHER_H
@@ -15,7 +16,7 @@ class Cacher
 {
 private:
     Address* serverAddr;
-    static Cacher* instance = NULL;
+    static Cacher* instance;
     std::map<FileDescription,std::string> filePaths;
     Cacher();
     void _removeFileNameFromPath(char *);
