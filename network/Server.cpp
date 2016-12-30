@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <cstdlib>
+#include <thread>
 #include "Server.h"
 #include "Command.h"
 #include "IOWrappers.h"
@@ -91,4 +92,21 @@ Address Server::listenForOpen() {
 
 Address Server::getAddress() {
     return address;
+}
+
+void Server::processCommandQueue() {
+    //start a new thread with _processCommandQueue
+
+    std::thread([=] {_processCommandQueue();});
+
+}
+
+void Server::executeCommand(Command command) {
+    //acquire queueLock
+    commandQueue.push(command);
+    //release the lock
+}
+
+void Server::listenForCommands() {
+    std::thread([=] {_listenForCommands();});
 }

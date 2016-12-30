@@ -1,6 +1,7 @@
 //
 // Created by alin on 12/27/16.
 //
+#include <thread>
 #include "PeerConnector.h"
 #include "ConnectionHandler.h"
 #include "DownloadPeer.h"
@@ -12,7 +13,7 @@ void PeerConnector::start()
      * attempt to connect to peers
      * in order to obtain the file
      */
-    //create the thread object with _attemptConnections();
+    std::thread([=] {_attemptConnections();});
     return;
 }
 

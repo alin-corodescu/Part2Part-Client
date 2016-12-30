@@ -18,7 +18,7 @@ private:
     static ConnectionHandler* instance;
     Server* server;
     int publicIP; //maybe i'll use it
-    void _acceptNATTraversal(Address& a);
+    void _acceptNATTraversal(const Address& a);
     ConnectionHandler();
     void _startService();
     bool alive;
@@ -54,7 +54,7 @@ public:
      * @tag thread
      * @param a
      */
-    void acceptNATTraversal(Address& a);
+    void acceptNATTraversal(const Address& a);
 
     Server& getServer();
 

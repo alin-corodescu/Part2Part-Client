@@ -3,6 +3,7 @@
 //
 
 #include <CommandBuilder.h>
+#include <thread>
 #include "PeerConnection.h"
 
 
@@ -22,4 +23,8 @@ PeerConnection::PeerConnection(FileDescription *fileDescription) {
     if (fileDescription != NULL)
         this->fileDescription = new FileDescription(*fileDescription);
 
+}
+
+void PeerConnection::start() {
+    std::thread([=] {_start();});
 }

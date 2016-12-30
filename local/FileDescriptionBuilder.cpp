@@ -7,3 +7,7 @@
 FileDescription FileDescriptionBuilder::buildFromString(char *string) {
     FileDescription fd;
 }
+
+FileDescription FileDescriptionBuilder::readFromFile(FILE *file) {
+    return FileDescription();
+}

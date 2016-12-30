@@ -15,5 +15,8 @@ set(SOURCE_FILES main.cpp network/ConnectionHandler.h network/Server.h
         local/io/CLI.cpp local/io/CLI.h local/QueryExecutor.cpp local/QueryExecutor.h
         network/Server.cpp local/CommandParser.cpp local/CommandParser.h
         network/DownloadPeer.cpp network/DownloadPeer.h network/UploadPeer.cpp network/UploadPeer.h
-        network/PeerConnector.cpp network/PeerConnector.h network/ConnectionHandler.cpp network/NATTraversalUtils.cpp network/NATTraversalUtils.h local/storage/Cacher.cpp network/Address.cpp)
+        network/PeerConnector.cpp network/PeerConnector.h network/ConnectionHandler.cpp network/NATTraversalUtils.cpp
+        network/NATTraversalUtils.h local/storage/Cacher.cpp network/Address.cpp)
+
 add_executable(client ${SOURCE_FILES})
+target_link_libraries(client ${CMAKE_INCLUDE_PATH}/bin/Debug/libIOWrappers.a)

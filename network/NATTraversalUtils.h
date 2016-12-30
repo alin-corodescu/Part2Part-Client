@@ -24,7 +24,7 @@ public:
      */
     static void obtainNATPort(Address &a, int socket);
 
-    static void notify(Address &a, int server);
+    static void notify(const Address &a, int server);
 
     static void connectThrough(int socket,unsigned int ip,unsigned short port);
 

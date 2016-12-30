@@ -5,6 +5,7 @@
 #include <cstring>
 #include <dirent.h>
 #include "Cacher.h"
+#include "../FileDescriptionBuilder.h"
 
 Cacher* Cacher::instance = NULL;
 
@@ -88,5 +89,31 @@ void Cacher::_removeFileNameFromPath(char * path) {
     {
         if (path[i] =='/') break;
     }
+
+}
+
+FileDescription Cacher::readFileDescription(const char *path) {
+    FILE* in = fopen(path,"r");
+
+    char *buffer;
+    size_t pathLength;
+
+    getline(&buffer,&pathLength,in);
+
+    char* pathToFile = (char*) malloc(pathLength);
+    strcpy(pathToFile,buffer);
+    free(buffer);
+
+    if (pathToFile[pathLength-1] == '\n')
+        pathToFile[--pathLength] = '\0';
+
+    FileDescriptionBuilder *builder = new FileDescriptionBuilder();
+    FileDescription fileDescription = builder->readFromFile(in);
+
+    delete builder;
+
+    registerNewFile(fileDescription,pathToFile,0);
+
+    free(pathToFile);
 
 }

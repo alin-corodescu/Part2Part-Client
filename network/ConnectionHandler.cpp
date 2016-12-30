@@ -8,6 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <cstring>
+#include <thread>
 #include "ConnectionHandler.h"
 #include "NATTraversalUtils.h"
 #include "UploadPeer.h"
@@ -60,7 +61,7 @@ DownloadPeer * ConnectionHandler::attemptNATTraversal(Address a){
     return peer;
 }
 
-void ConnectionHandler::_acceptNATTraversal(Address &a) {
+void ConnectionHandler::_acceptNATTraversal(const Address &a) {
     int accepter, requester, server;
     accepter = NATTraversalUtils::reusableSocket();
     requester = NATTraversalUtils::reusableSocket();
@@ -180,5 +181,10 @@ void ConnectionHandler::_startService() {
 void ConnectionHandler::startService() {
     alive = 1;
     //TODO: start a thread with _startService here
+
+}
+
+void ConnectionHandler::acceptNATTraversal(const Address &a) {
+    std::thread([=] {_acceptNATTraversal(a);});
 
 }

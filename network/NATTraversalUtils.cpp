@@ -102,7 +102,7 @@ int NATTraversalUtils::holePunch(Address peer, int requester, int accepter) {
     return connectedSocket;
 }
 
-void NATTraversalUtils::notify(Address &a, int server) {
+void NATTraversalUtils::notify(const Address &a, int server) {
     unsigned int  ip = a.getPublicIP();
     //establish ephemere server connection
     ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();

@@ -11,6 +11,7 @@
 class FileDescriptionBuilder {
 public:
     FileDescription buildFromString(char* string);
+    FileDescription readFromFile(FILE* file);
 };
 
 
