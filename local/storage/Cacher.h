@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/21/16.
 //
-
+#pragma once
 #include <FileDescription.h>
 #include <vector>
 #include <map>
@@ -19,6 +19,10 @@ private:
     std::map<FileDescription,std::string> filePaths;
     Cacher();
     void _removeFileNameFromPath(char *);
+    /**
+     * reads a cached file description and updates
+     * the private members of the class
+     */
     FileDescription readFileDescription(const char* path);
 public:
     std::vector<FileDescription> loadFilesFromCache();

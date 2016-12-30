@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/21/16.
 //
-
+#pragma once
 #ifndef CLIENT_FILEREADER_H
 #define CLIENT_FILEREADER_H
 

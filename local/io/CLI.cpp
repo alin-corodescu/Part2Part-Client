@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/26/16.
 //
-
+#pragma once
 #include <cstdio>
 #include <cstring>
 #include <string>
@@ -69,8 +69,8 @@ void CLI::processQuery() {
     printf("Size of the file [0=default]: \n");
     scanf("%d",&fileSize);
 
-    FileDescription query;
-    QueryExecutor *executor = new QueryExecutor(query)
+    FileDescription *query;
+    QueryExecutor *executor = new QueryExecutor(*query);
     executor->execute();
 
 }
@@ -80,9 +80,9 @@ void CLI::processChose() {
     int index;
     ResultsDisplayer resultsDisplayer;
     scanf("%d",&index);
-    FileDescription fileDescription;
+    FileDescription *fileDescription;
     try {
-        fileDescription = resultsDisplayer.getFDForIndex(index);
+        *fileDescription = resultsDisplayer.getFDForIndex(index);
     }
     catch (exception& e){
         printf("Please try another index\n");

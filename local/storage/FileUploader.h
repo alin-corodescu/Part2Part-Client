@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/21/16.
 //
-
+#pragma once
 #ifndef CLIENT_FILEUPLOADER_H
 #define CLIENT_FILEUPLOADER_H
 

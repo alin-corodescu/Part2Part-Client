@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/28/16.
 //
-
+#pragma once
 #include <Command.h>
 #include <cstring>
 #include <cstdlib>
@@ -16,7 +16,7 @@ void DownloadPeer::request() {
     CommandBuilder commandBuilder;
 
     commandBuilder.setType(PROVIDE);
-    commandBuilder.addArgument(fileDescription);
+    commandBuilder.addArgument(&fileDescription);
     Command request = commandBuilder.build();
 
     _sendCommand(request);

@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/28/16.
 //
-
+#pragma once
 #ifndef CLIENT_NATTRAVERSALUTILS_H
 #define CLIENT_NATTRAVERSALUTILS_H
 

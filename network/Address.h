@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/21/16.
 //
-
+#pragma once
 #ifndef CLIENT_ADRESS_H
 #define CLIENT_ADRESS_H
 
@@ -36,4 +36,6 @@ public:
 
     Address(unsigned int publicIP,unsigned short publicPort,
                 unsigned int privateIP = 0,unsigned short privatePort = 0);
+
+    Address(const char* stringAddr);
 };

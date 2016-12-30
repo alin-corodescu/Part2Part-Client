@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/28/16.
 //
-
+#pragma once
 #include <CommandBuilder.h>
 #include <NetworkWrappers.h>
 #include <unistd.h>

@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/27/16.
 //
-
+#pragma once
 #include "PeerConnector.h"
 #include "ConnectionHandler.h"
 #include "DownloadPeer.h"
@@ -58,8 +58,7 @@ void PeerConnector::_attemptConnections() {
     }
 }
 
-PeerConnector::PeerConnector(FileDescription fileDescription, std::vector<Address> addresses) {
-    this->fileDescription = fileDescription;
+PeerConnector::PeerConnector(FileDescription *fileDescription, std::vector<Address> addresses) : fileDescription(*fileDescription) {
     this->addresses = addresses;
 }
 

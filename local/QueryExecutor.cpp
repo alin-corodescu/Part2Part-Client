@@ -19,5 +19,5 @@ void QueryExecutor::execute() {
 }
 
 QueryExecutor::QueryExecutor(FileDescription query) {
-    this -> query = query;
+    this -> query = new FileDescription(query);
 }

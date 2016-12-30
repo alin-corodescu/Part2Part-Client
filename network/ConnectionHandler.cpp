@@ -2,7 +2,7 @@
 // Created by alin on 12/28/16.
 //
 
-
+#pragma once
 #include <NetworkWrappers.h>
 #include <CommandBuilder.h>
 #include <ifaddrs.h>

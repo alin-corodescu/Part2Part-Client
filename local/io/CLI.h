@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/26/16.
 //
-
+#pragma once
 #ifndef CLIENT_CLI_H
 #define CLIENT_CLI_H
 

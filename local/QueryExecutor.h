@@ -13,7 +13,7 @@
  */
 class QueryExecutor {
 private:
-    FileDescription query;
+    FileDescription *query;
 public:
     QueryExecutor(FileDescription query);
 

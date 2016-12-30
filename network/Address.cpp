@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/29/16.
 //
-
+#pragma once
 #include "Address.h"
 
 Address::Address(unsigned int publicIP,unsigned short publicPort,

@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/27/16.
 //
-
+#pragma once
 #ifndef CLIENT_PEERCONNECTOR_H
 #define CLIENT_PEERCONNECTOR_H
 
@@ -16,7 +16,7 @@ private:
     std::vector<Address> addresses;
     void _attemptConnections();
 public:
-    PeerConnector(FileDescription fileDescription,
+    PeerConnector(FileDescription *fileDescription,
                     std::vector<Address> addresses);
 
     /**

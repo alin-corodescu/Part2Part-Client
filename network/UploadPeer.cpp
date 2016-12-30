@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/28/16.
 //
-
+#pragma once
 #include <IOWrappers.h>
 #include <cstring>
 #include <Command.h>

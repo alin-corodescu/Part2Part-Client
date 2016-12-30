@@ -14,7 +14,7 @@ void Publisher::publish(std::vector<FileDescription> files) {
     commandBuilder.setType(PUBLISH);
     commandBuilder.addArgument(numberOfFileDescriptions);
     for (unsigned int i = 0 ; i < numberOfFileDescriptions; i++)
-        commandBuilder.addArgument(files[i]);
+        commandBuilder.addArgument(&files[i]);
 
     Command publish = commandBuilder.build();
 

@@ -1,7 +1,7 @@
 //
 // Created by alin on 12/21/16.
 //
-
+#pragma once
 #include "ResultsDisplayer.h"
 
 void ResultsDisplayer::display(std::vector<FileDescription> fds) {
