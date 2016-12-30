@@ -108,3 +108,19 @@ CLI::CLI() {
 
 
 }
+
+void CLI::showHelp() {
+
+}
+
+void CLI::processPublishRequest() {
+
+}
+
+void CLI::processUnpublishRequest() {
+
+}
+
+void CLI::proccessDisconnectRequest() {
+
+}

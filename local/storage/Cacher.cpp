@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include <dirent.h>
+#include <IntegrityChecker.h>
 #include "Cacher.h"
 #include "../FileDescriptionBuilder.h"
 
@@ -13,7 +14,6 @@ std::vector<FileDescription> Cacher::loadFilesFromCache() {
     std::vector<FileDescription> files;
     char path[100] = CACHE_LOCATION;
     strcat(path,"/");
-
     DIR* d;
     d = opendir(CACHE_LOCATION);
 
@@ -22,11 +22,22 @@ std::vector<FileDescription> Cacher::loadFilesFromCache() {
     {
         if (!strcmp(element->d_name,".")  || !strcmp(element->d_name,"..")) {
             _removeFileNameFromPath(path);
-            strcat(path,element->d_name);
-            FileDescription fileDescription = readFileDescription(path);
-            files.push_back(fileDescription);
+            strcat(path, element->d_name);
+            FileDescription* fileDescription;
+            try {
+                fileDescription = new FileDescription(readFileDescription(path));
+                files.push_back(*fileDescription);
+                delete fileDescription;
+            }
+            catch (...)
+            {
+                element = readdir(d);
+                continue;
+            }
 
-            registerNewFile(fileDescription,path,false);
+
+
+            //registerNewFile(fileDescription,path,false);
         }
         element = readdir(d);
     }
@@ -111,8 +122,10 @@ FileDescription Cacher::readFileDescription(const char *path) {
     FileDescription fileDescription = builder->readFromFile(in);
 
     delete builder;
-
-    registerNewFile(fileDescription,pathToFile,0);
+    if (IntegrityChecker::checkIntegrity(fileDescription,pathToFile))
+        registerNewFile(fileDescription,pathToFile,0);
+    else
+        throw;
 
     free(pathToFile);
 

@@ -116,3 +116,8 @@ void Server::executeCommand(Command command) {
 void Server::listenForCommands() {
     std::thread([=] {_listenForCommands();});
 }
+
+Server::Server(const Server &s) : address(s.address), incomingCommandParser(s.incomingCommandParser) {
+    _socketDescriptor = s._socketDescriptor;
+    connected = s.connected;
+}

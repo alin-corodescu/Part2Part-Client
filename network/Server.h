@@ -74,6 +74,10 @@ public:
      * commands
      */
     void processCommandQueue();
+    /**
+     * Copy constructor
+     */
+    Server(const Server& s);
 };
 
 
