@@ -37,5 +37,10 @@ public:
     Address(unsigned int publicIP,unsigned short publicPort,
                 unsigned int privateIP = 0,unsigned short privatePort = 0);
 
+    /**
+     * constructor for IP:Port format
+     * @param stringAddr
+     * @return
+     */
     Address(const char* stringAddr);
 };

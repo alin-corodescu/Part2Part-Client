@@ -4,6 +4,7 @@
 #pragma once
 #include <queue>
 #include <IOWrappers.h>
+#include <mutex>
 #include "Command.h"
 #include "../local/CommandParser.h"
 #include "Address.h"
@@ -17,6 +18,7 @@ class Server
 { friend class NATTraversalUtils;
     friend class ConnectionHandler;
 private:
+    std::mutex queueLock;
     Address address;
     CommandParser incomingCommandParser;
     int _socketDescriptor;

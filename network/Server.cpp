@@ -19,7 +19,6 @@ void Server::_listenForCommands() {
     char* command;
     while (1)
     {
-        //read(_socketDescriptor, command, 13);
 
         command = readString(_socketDescriptor,13);
 
@@ -48,13 +47,20 @@ int Server::getPublicIP() {
 void Server::_processCommandQueue() {
     while (connected)
     {
-        while (!commandQueue.empty())
+        queueLock.lock();
+        bool isEmpty = commandQueue.empty();
+        queueLock.unlock();
+        while (!isEmpty)
         {
-            //obtain the lock
+            queueLock.lock();
             Command next = commandQueue.front();
             commandQueue.pop();
+            queueLock.unlock();
+
             _executeCommand(next);
-            //release the lock
+            queueLock.lock();
+            bool isEmpty = commandQueue.empty();
+            queueLock.unlock();
         }
     }
 }
@@ -102,9 +108,9 @@ void Server::processCommandQueue() {
 }
 
 void Server::executeCommand(Command command) {
-    //acquire queueLock
+    queueLock.lock();
     commandQueue.push(command);
-    //release the lock
+    queueLock.unlock();
 }
 
 void Server::listenForCommands() {

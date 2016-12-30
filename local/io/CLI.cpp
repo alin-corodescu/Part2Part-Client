@@ -20,6 +20,7 @@ void CLI::listenForCommands() {
     char command[50];
     while(1)
     {
+        printf("Command: ");
         scanf("%s", command);
         if (!strcmp(command,"query"))
             processQuery();
@@ -35,6 +36,8 @@ void CLI::listenForCommands() {
             proccessDisconnectRequest();
         else
             printf("Invalid command. Try \"help\" for suggestions\n");
+
+        printf("\n");
 
     }
 }

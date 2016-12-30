@@ -138,7 +138,7 @@ ConnectionHandler *ConnectionHandler::getInstance() {
 }
 
 ConnectionHandler::ConnectionHandler() {
-
+    alive = true;
 }
 
 void ConnectionHandler::_startService() {
