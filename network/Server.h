@@ -13,17 +13,20 @@
 #define CLIENT_SERVER_H
 
 #endif //CLIENT_SERVER_H
-
+#define HEARTBEAT_INTERVAL 5
 class Server
 { friend class NATTraversalUtils;
     friend class ConnectionHandler;
 private:
+    std::mutex clockLock;
     std::mutex queueLock;
+    std::chrono::steady_clock::time_point last_command;
     Address address;
     CommandParser incomingCommandParser;
     int _socketDescriptor;
     bool connected;
     std::queue<Command> commandQueue;
+    void _hearbeats();
 protected:
     /**
      * function used to send the command
@@ -74,6 +77,12 @@ public:
      * commands
      */
     void processCommandQueue();
+
+    /**
+     * sends at regular time intervals, if no other command
+     * has been sent, a heartbeat.
+     */
+    void heartbeats();
     /**
      * Copy constructor
      */

@@ -39,6 +39,8 @@ void setup()
     connectionHandler = ConnectionHandler::getInstance();
 
     //TODO : maybe try-catch
+    connectionHandler -> startService();
+
     connectionHandler -> connectToServer(*serverAddress);
 
     Publisher *publisher = new Publisher(connectionHandler->getServer());

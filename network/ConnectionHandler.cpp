@@ -105,6 +105,8 @@ int ConnectionHandler::connectToServer(Address serverAddress) {
 
     server->listenForCommands();
 
+    server->heartbeats();
+
 }
 
 unsigned int ConnectionHandler::getPrivateIP() {
@@ -145,7 +147,7 @@ void ConnectionHandler::_startService() {
     int listeningSocket;
     int val = 1;
 
-    listeningSocket = socket(AF_INET,SOCK_PACKET,0);
+    listeningSocket = socket(AF_INET,SOCK_STREAM,0);
     setsockopt(listeningSocket,SOL_SOCKET,SO_REUSEADDR,&val,sizeof(val));
 
     struct sockaddr_in addr;
@@ -172,15 +174,11 @@ void ConnectionHandler::_startService() {
         UploadPeer *uploadPeer = new UploadPeer(peer);
         uploadPeer->start();
     }
-
-
-
-
 }
 
 void ConnectionHandler::startService() {
     alive = 1;
-    //TODO: start a thread with _startService here
+    std::thread([=] {_startService();});
 
 }
 

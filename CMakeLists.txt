@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.6)
 project(client)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
-set(CMAKE_INCLUDE_PATH "/home/alin/Part2Part/shared")
-include_directories(/home/alin/Part2Part/shared/include)
+
+
 
 set(SOURCE_FILES main.cpp network/ConnectionHandler.h network/Server.h
         network/Address.h local/storage/Cacher.h local/Publisher.cpp
@@ -19,6 +19,9 @@ set(SOURCE_FILES main.cpp network/ConnectionHandler.h network/Server.h
         network/NATTraversalUtils.h local/storage/Cacher.cpp network/Address.cpp)
 
 add_executable(client ${SOURCE_FILES})
+
+include_directories(/home/alin/Part2Part/shared/include)
+set(CMAKE_INCLUDE_PATH "/home/alin/Part2Part/shared")
 target_link_libraries(client ${CMAKE_INCLUDE_PATH}/bin/Debug/libIOWrappers.a
         ${CMAKE_INCLUDE_PATH}/bin/Debug/libCommands.a
         ${CMAKE_INCLUDE_PATH}/bin/Debug/libFileDescription.a

@@ -84,10 +84,11 @@ void CLI::processChose() {
     scanf("%d",&index);
     FileDescription *fileDescription;
     try {
-        *fileDescription = resultsDisplayer.getFDForIndex(index);
+        fileDescription = new FileDescription(resultsDisplayer.getFDForIndex(index));
     }
     catch (exception& e){
         printf("Please try another index\n");
+        return;
     }
 
     CommandBuilder commandBuilder;
