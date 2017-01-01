@@ -39,14 +39,17 @@ int NATTraversalUtils::reusableSocket() {
 
 void NATTraversalUtils::obtainNATPort(Address &a, int socket) {
 
-    unsigned int  ip = a.getPublicIP();
     //establish ephemere server connection
     ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
     Address serverAddress =  connectionHandler->getServer().getAddress();
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(NOTIFIY);
-    commandBuilder.addArgument(ip);
+    commandBuilder.addArgument(a.getPublicIP());
+    commandBuilder.addArgument(a.getPublicPort());
+    commandBuilder.addArgument(a.getPrivateIP());
+    commandBuilder.addArgument(a.getPublicPort());
+
 
     Command notification = commandBuilder.build();
 
@@ -103,14 +106,16 @@ int NATTraversalUtils::holePunch(Address peer, int requester, int accepter) {
 }
 
 void NATTraversalUtils::notify(const Address &a, int server) {
-    unsigned int  ip = a.getPublicIP();
     //establish ephemere server connection
     ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
     Address serverAddress =  connectionHandler->getServer().getAddress();
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(NOTIFIY);
-    commandBuilder.addArgument(ip);
+    commandBuilder.addArgument(a.getPublicIP());
+    commandBuilder.addArgument(a.getPublicPort());
+    commandBuilder.addArgument(a.getPrivateIP());
+    commandBuilder.addArgument(a.getPublicPort());
 
     Command notification = commandBuilder.build();
 

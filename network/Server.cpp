@@ -41,6 +41,7 @@ void Server::_listenForCommands() {
 }
 int Server::getPublicIP() {
     unsigned int ip;
+    free(readString(_socketDescriptor,COMM_LENGTH));
     readUInt(_socketDescriptor,ip);
     return ip;
 }

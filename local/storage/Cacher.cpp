@@ -119,10 +119,10 @@ FileDescription Cacher::readFileDescription(const char *path) {
         pathToFile[--pathLength] = '\0';
 
     FileDescriptionBuilder *builder = new FileDescriptionBuilder();
-    FileDescription fileDescription = builder->readFromFile(in);
+    FileDescription *fileDescription = builder->readFromFile(in);
 
     delete builder;
-    if (IntegrityChecker::checkIntegrity(fileDescription,pathToFile))
+    if (IntegrityChecker::checkIntegrity(*fileDescription,pathToFile))
         registerNewFile(fileDescription,pathToFile,0);
     else
         throw;

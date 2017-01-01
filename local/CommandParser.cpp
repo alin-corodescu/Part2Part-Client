@@ -13,7 +13,7 @@
 #include "../network/ConnectionHandler.h"
 
 FileDescription CommandParser::readFileDescription() {
-    FileDescriptionBuilder fileDescriptionBuilder;
+    FileDescriptionBuilder *fileDescriptionBuilder = new FileDescriptionBuilder();
     FileDescription *fileDescription;
 
     unsigned int fdSize;
@@ -22,9 +22,10 @@ FileDescription CommandParser::readFileDescription() {
     readUInt(socketDescriptor, fdSize);
 
     fileDescriptionString = readString(socketDescriptor, fdSize);
-    *fileDescription = fileDescriptionBuilder.buildFromString(fileDescriptionString);
+    fileDescription = fileDescriptionBuilder->buildFromString(fileDescriptionString);
     free(fileDescriptionString);
 
+    delete fileDescriptionBuilder;
     return *fileDescription;
 }
 

@@ -29,7 +29,7 @@ void UploadPeer::listenForCommand() {
     fdString = readString(socketDescriptor,size);
     FileDescriptionBuilder fileDescriptionBuilder;
 
-    fileDescription = new FileDescription(fileDescriptionBuilder.buildFromString(fdString));
+    fileDescription = fileDescriptionBuilder.buildFromString(fdString);
     free(fdString);
 
     Cacher *cacher = Cacher::getInstance();
