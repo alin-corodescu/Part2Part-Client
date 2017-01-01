@@ -5,7 +5,7 @@
 #ifndef CLIENT_INPUTREQUESTER_H
 #define CLIENT_INPUTREQUESTER_H
 
-#include "../../network/Address.h"
+#include <Address.h>
 #include "ResultsDisplayer.h"
 
 /**
