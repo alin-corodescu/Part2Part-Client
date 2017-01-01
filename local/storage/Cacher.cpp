@@ -6,7 +6,7 @@
 #include <dirent.h>
 #include <IntegrityChecker.h>
 #include "Cacher.h"
-#include "../FileDescriptionBuilder.h"
+#include <FileDescriptionBuilder.h>
 
 Cacher* Cacher::instance = NULL;
 

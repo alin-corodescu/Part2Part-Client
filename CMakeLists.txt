@@ -10,7 +10,7 @@ set(SOURCE_FILES main.cpp network/ConnectionHandler.h network/Server.h
         local/Publisher.h local/storage/FileWriter.cpp local/storage/FileWriter.h
         local/storage/FileDownloader.cpp local/storage/FileDownloader.h local/storage/FileUploader.cpp
         local/storage/FileUploader.h local/storage/FileReader.cpp local/storage/FileReader.h network/PeerConnection.cpp
-        network/PeerConnection.h local/FileDescriptionBuilder.cpp local/FileDescriptionBuilder.h
+        network/PeerConnection.h
         local/io/ResultsDisplayer.cpp local/io/ResultsDisplayer.h local/io/UserInteractor.cpp local/io/UserInteractor.h
         local/io/CLI.cpp local/io/CLI.h local/QueryExecutor.cpp local/QueryExecutor.h
         network/Server.cpp local/CommandParser.cpp local/CommandParser.h

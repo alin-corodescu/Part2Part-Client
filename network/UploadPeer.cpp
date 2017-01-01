@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <CommandBuilder.h>
 #include "UploadPeer.h"
-#include "../local/FileDescriptionBuilder.h"
+#include <FileDescriptionBuilder.h>
 #include "../local/storage/Cacher.h"
 #include "../local/storage/FileUploader.h"
 #include "../local/storage/FileReader.h"

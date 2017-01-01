@@ -7,7 +7,7 @@
 #include <FileDescription.h>
 #include <vector>
 #include "CommandParser.h"
-#include "FileDescriptionBuilder.h"
+#include <FileDescriptionBuilder.h>
 #include "io/ResultsDisplayer.h"
 #include "../network/PeerConnector.h"
 #include "../network/ConnectionHandler.h"
