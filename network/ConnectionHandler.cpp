@@ -89,7 +89,10 @@ int ConnectionHandler::connectToServer(Address serverAddress) {
     unsigned short port = serverAddress.getPublicPort();
 
     unsigned int privateIP = getPrivateIP();
-    int socket = connectTo(ip,port);
+
+    int socket;
+    try {socket = connectTo(ip,port);}
+    catch (const char* ex) {printf("%s\n",ex); return -1;}
 
     server = new Server(socket,serverAddress);
 
@@ -107,6 +110,8 @@ int ConnectionHandler::connectToServer(Address serverAddress) {
 
     server->heartbeats();
 
+    return 0;
+
 }
 
 unsigned int ConnectionHandler::getPrivateIP() {
@@ -122,7 +127,7 @@ unsigned int ConnectionHandler::getPrivateIP() {
             struct sockaddr_in *pAddr = (struct sockaddr_in *)addrs->ifa_addr;
             if (strcmp(inet_ntoa(pAddr->sin_addr), "127.0.0.1")) {
                 privateIP = ntohl(pAddr->sin_addr.s_addr);
-                freeifaddrs(addrs);
+                freeifaddrs(cpy);
                 return privateIP;
             }
         }
@@ -178,7 +183,7 @@ void ConnectionHandler::_startService() {
 
 void ConnectionHandler::startService() {
     alive = 1;
-    std::thread([=] {_startService();});
+    new std::thread([=] {_startService();});
 
 }
 

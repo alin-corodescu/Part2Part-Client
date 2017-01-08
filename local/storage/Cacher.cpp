@@ -16,33 +16,32 @@ std::vector<FileDescription> Cacher::loadFilesFromCache() {
     strcat(path,"/");
     DIR* d;
     d = opendir(CACHE_LOCATION);
+    if (d != NULL) {
+        dirent *element = readdir(d);
+        while (element) {
+            if (strcmp(element->d_name, ".") && strcmp(element->d_name, "..")) {
+                _removeFileNameFromPath(path);
+                strcat(path, element->d_name);
+                FileDescription *fileDescription;
+                try {
+                    fileDescription = new FileDescription(readFileDescription(path));
+                    files.push_back(*fileDescription);
+                    delete fileDescription;
+                }
+                catch (...) {
+                    element = readdir(d);
+                    continue;
+                }
 
-    dirent* element = readdir(d);
-    while (element)
-    {
-        if (strcmp(element->d_name,".")  || strcmp(element->d_name,"..")) {
-            _removeFileNameFromPath(path);
-            strcat(path, element->d_name);
-            FileDescription* fileDescription;
-            try {
-                fileDescription = new FileDescription(readFileDescription(path));
-                files.push_back(*fileDescription);
-                delete fileDescription;
+
+
+                //registerNewFile(fileDescription,path,false);
             }
-            catch (...)
-            {
-                element = readdir(d);
-                continue;
-            }
-
-
-
-            //registerNewFile(fileDescription,path,false);
+            element = readdir(d);
         }
-        element = readdir(d);
-    }
 
-    return files;
+        return files;
+    }
 }
 
 Cacher *Cacher::getInstance() {

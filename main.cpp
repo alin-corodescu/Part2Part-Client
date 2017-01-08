@@ -7,17 +7,21 @@
 
 
 using namespace std;
-void setup();
+int setup();
 int main() {
 
     UserInteractor *userInteractor = UserInteractor::getInstance();
-    setup();
+    int status = setup();
+    while (status == -1)
+    {
+        status = setup();
+    }
 
     userInteractor -> listenForCommands(); //this will listen to from the user;
 
     return 0;
 }
-void setup()
+int setup()
 {
     UserInteractor *userInteractor = UserInteractor::getInstance();
 
@@ -25,7 +29,15 @@ void setup()
     /**
     * TODO: think how to make userInteractor functions very extensible
     */
-    Address *serverAddress = userInteractor -> requestServerAddress();
+    Address *serverAddress;
+    try {
+        serverAddress = userInteractor->requestServerAddress();
+    }
+    catch(const char* ex)
+    {
+        printf("%s\n",ex);
+        return -1;
+    }
 
     Cacher *cacher = Cacher::getInstance();
 
@@ -38,15 +50,17 @@ void setup()
     ConnectionHandler *connectionHandler;
     connectionHandler = ConnectionHandler::getInstance();
 
-    //TODO : maybe try-catch
-    connectionHandler -> startService();
+    if (connectionHandler -> connectToServer(*serverAddress) != -1) {
+        //TODO : maybe try-catch
+        connectionHandler -> startService();
 
-    connectionHandler -> connectToServer(*serverAddress);
+        Publisher *publisher = new Publisher(connectionHandler->getServer());
 
-    Publisher *publisher = new Publisher(connectionHandler->getServer());
+        publisher->publish(lastSessionFiles); //on a new thread
 
-    publisher->publish(lastSessionFiles); //on a new thread
+        delete publisher;
+    }
 
-    delete publisher;
+    return -1;
 
 }
