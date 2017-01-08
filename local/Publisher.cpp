@@ -5,7 +5,9 @@
 #include <CommandBuilder.h>
 #include "Publisher.h"
 
+Publisher* Publisher::instance;
 Publisher::Publisher(Server server) : server(server) {
+    this->instance = this;
 }
 
 void Publisher::publish(std::vector<FileDescription> files) {
@@ -26,4 +28,8 @@ void Publisher::publish(FileDescription file) {
     std::vector<FileDescription> files;
     files.push_back(file);
     publish(files);
+}
+
+Publisher *Publisher::getInstance() {
+    return instance;
 }

@@ -5,12 +5,16 @@
 #include <cstring>
 #include <string>
 #include <FileDescription.h>
+#include <FileDescriptionBuilder.h>
+#include <sys/stat.h>
+#include <IntegrityChecker.h>
 
 using namespace std;
 #include "CLI.h"
 #include "../QueryExecutor.h"
 #include "CommandBuilder.h"
 #include "../../network/ConnectionHandler.h"
+#include "../Publisher.h"
 
 void CLI::init() {
     printf("Welcome to Part2Part!\n");
@@ -57,16 +61,16 @@ Address* CLI::requestServerAddress() {
 void CLI::processQuery() {
     char name[50];
     int fileSize;
-    char **desc, **type; size_t descSize = 0, typeSize = 0;
+    char *desc = NULL, *type = NULL; size_t descSize = 0, typeSize = 0;
 
     printf("Name of the file to be searched:\n");
     scanf("%s", name);
 
     printf("Description of the file [optional]:\n");
-    getline(desc,&descSize,stdin);
+    getline(&desc,&descSize,stdin);
 
     printf("Type of the file [optional]: \n");
-    getline(type, &typeSize, stdin);
+    getline(&type, &typeSize, stdin);
 
     printf("Size of the file [0=default]: \n");
     scanf("%d",&fileSize);
@@ -115,7 +119,40 @@ void CLI::showHelp() {
 }
 
 void CLI::processPublishRequest() {
-
+#define DESC_LEGNTH 500
+    FileDescription* fileDescription;
+    FileDescriptionBuilder * builder = new FileDescriptionBuilder();
+    char * path = NULL;
+    struct stat buffer;
+    size_t pathLength;
+    printf("Path to the file: \n");
+    getline(&path,&pathLength,stdin);
+    if (!stat(path,&buffer)) {
+        if (S_ISREG(buffer.st_mode)) {
+            char * name = basename(path);
+            builder->init();
+            builder->addSize(buffer.st_size);
+            builder->addName(name);
+            builder->addHash(IntegrityChecker::hashForFile(path).data());
+            char * type;
+            type = strchr(name,'.');
+            if (type != NULL)
+                builder->addType(type);
+            char desc[DESC_LEGNTH];
+            size_t desc_length;
+            printf("Description:");
+            getline((char**)&desc,&desc_length,stdin);
+            builder->addDescription(desc);
+            Publisher::getInstance()->publish(*builder->build());
+        }
+        else
+        {
+            printf("Path doesn't lead to a file!\n");
+        }
+    }
+    else {
+        printf("Invalid path\n");
+    }
 }
 
 void CLI::processUnpublishRequest() {

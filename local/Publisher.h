@@ -16,7 +16,7 @@
 class Publisher {
 private:
     Server server;
-
+    static Publisher* instance;
 public:
     Publisher(Server server);
 
@@ -31,6 +31,8 @@ public:
      * @param file
      */
     void publish(FileDescription file);
+
+    static Publisher* getInstance();
 };
 
 

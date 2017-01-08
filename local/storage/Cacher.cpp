@@ -20,7 +20,7 @@ std::vector<FileDescription> Cacher::loadFilesFromCache() {
     dirent* element = readdir(d);
     while (element)
     {
-        if (!strcmp(element->d_name,".")  || !strcmp(element->d_name,"..")) {
+        if (strcmp(element->d_name,".")  || strcmp(element->d_name,"..")) {
             _removeFileNameFromPath(path);
             strcat(path, element->d_name);
             FileDescription* fileDescription;
@@ -106,7 +106,7 @@ void Cacher::_removeFileNameFromPath(char * path) {
 FileDescription Cacher::readFileDescription(const char *path) {
     FILE* in = fopen(path,"r");
 
-    char *buffer;
+    char *buffer = NULL;
     size_t pathLength;
 
     getline(&buffer,&pathLength,in);
@@ -123,7 +123,7 @@ FileDescription Cacher::readFileDescription(const char *path) {
 
     delete builder;
     if (IntegrityChecker::checkIntegrity(*fileDescription,pathToFile))
-        registerNewFile(fileDescription,pathToFile,0);
+        registerNewFile(*fileDescription,pathToFile,0);
     else
         throw;
 
