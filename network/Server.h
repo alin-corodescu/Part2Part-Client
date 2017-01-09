@@ -18,8 +18,8 @@ class Server
 { friend class NATTraversalUtils;
     friend class ConnectionHandler;
 private:
-    std::mutex clockLock;
-    std::mutex queueLock;
+    static std::mutex clockMutex;
+    static std::mutex qMutex;
     std::chrono::steady_clock::time_point last_command;
     Address address;
     CommandParser incomingCommandParser;

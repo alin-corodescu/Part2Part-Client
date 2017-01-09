@@ -56,7 +56,7 @@ public:
      */
     void acceptNATTraversal(const Address& a);
 
-    Server& getServer();
+    Server* getServer();
 
     static ConnectionHandler* getInstance();
 

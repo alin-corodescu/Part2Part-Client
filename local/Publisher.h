@@ -15,10 +15,10 @@
  */
 class Publisher {
 private:
-    Server server;
+    Server* server;
     static Publisher* instance;
 public:
-    Publisher(Server server);
+    Publisher(Server* server);
 
     /**
      * @tag separate thread

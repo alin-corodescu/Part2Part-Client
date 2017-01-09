@@ -6,21 +6,22 @@
 #include "Publisher.h"
 
 Publisher* Publisher::instance;
-Publisher::Publisher(Server server) : server(server) {
+Publisher::Publisher(Server* server)  {
     this->instance = this;
+    this->server = server;
 }
 
 void Publisher::publish(std::vector<FileDescription> files) {
     unsigned int numberOfFileDescriptions = files.size();
     CommandBuilder commandBuilder;
     commandBuilder.setType(PUBLISH);
-    commandBuilder.addArgument(numberOfFileDescriptions);
+    commandBuilder.addArgument(numberOfFileDescriptions,INT);
     for (unsigned int i = 0 ; i < numberOfFileDescriptions; i++)
         commandBuilder.addArgument(&files[i]);
 
     Command publish = commandBuilder.build();
 
-    server.executeCommand(publish);
+    server->executeCommand(publish);
 
 }
 

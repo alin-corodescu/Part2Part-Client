@@ -59,6 +59,8 @@ int setup()
         publisher->publish(lastSessionFiles); //on a new thread
 
         delete publisher;
+
+        return 0;
     }
 
     return -1;

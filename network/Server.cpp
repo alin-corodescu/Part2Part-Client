@@ -10,7 +10,8 @@
 #include "Command.h"
 #include "IOWrappers.h"
 
-
+std::mutex Server::qMutex;
+std::mutex Server::clockMutex;
 void Server::_listenForCommands() {
     /**
      * commands will be parsed on the thread of this function
@@ -49,25 +50,22 @@ int Server::getPublicIP() {
 void Server::_processCommandQueue() {
     while (connected)
     {
-        queueLock.lock();
+        std::lock_guard<std::mutex> lck(qMutex);
+
         bool isEmpty = commandQueue.empty();
-        queueLock.unlock();
         while (!isEmpty)
         {
-            queueLock.lock();
             Command next = commandQueue.front();
             commandQueue.pop();
-            queueLock.unlock();
 
             _executeCommand(next);
-            queueLock.lock();
+
             isEmpty = commandQueue.empty();
-            queueLock.unlock();
         }
     }
 }
 
-Server::Server(int socket,Address serverAddress) : address(serverAddress), incomingCommandParser(socket) {
+Server::Server(int socket,Address serverAddress) : address(serverAddress), incomingCommandParser(socket){
     this->_socketDescriptor = socket;
 }
 
@@ -78,11 +76,9 @@ void Server::_executeCommand(Command command) {
     command.toString(string);
     writeString(_socketDescriptor,string, size);
     free(string);
-    clockLock.lock();
-    //mark the time it sent the command
-    last_command = std::chrono::steady_clock::now();
-    clockLock.unlock();
 
+    std::lock_guard<std::mutex> lck(clockMutex);
+    last_command = std::chrono::steady_clock::now();
 }
 
 Address Server::listenForOpen() {
@@ -109,18 +105,18 @@ Address Server::getAddress() {
 void Server::processCommandQueue() {
     //start a new thread with _processCommandQueue
 
-    std::thread([=] {_processCommandQueue();});
+    new std::thread([=] {_processCommandQueue();});
 
 }
 
 void Server::executeCommand(Command command) {
-    queueLock.lock();
+
+    std::lock_guard<std::mutex> lck(qMutex);
     commandQueue.push(command);
-    queueLock.unlock();
 }
 
 void Server::listenForCommands() {
-    std::thread([=] {_listenForCommands();});
+    new std::thread([=] {_listenForCommands();});
 }
 
 Server::Server(const Server &s) : address(s.address), incomingCommandParser(s.incomingCommandParser) {
@@ -129,13 +125,13 @@ Server::Server(const Server &s) : address(s.address), incomingCommandParser(s.in
 }
 
 void Server::heartbeats() {
-    std::thread([=] {_hearbeats();});
+    new std::thread([=] {_hearbeats();});
 }
 
 void Server::_hearbeats() {
     using namespace std::chrono;
     while (connected) {
-        clockLock.lock();
+        std::lock_guard<std::mutex> lck(clockMutex);
         steady_clock::time_point now = steady_clock::now();
         duration<double> timeElpased = duration_cast<duration<double>>(now - last_command);
         if (timeElpased.count() > HEARTBEAT_INTERVAL) {
@@ -146,6 +142,5 @@ void Server::_hearbeats() {
             delete commandBuilder;
             last_command = steady_clock::now();
         }
-        clockLock.unlock();
     }
 }

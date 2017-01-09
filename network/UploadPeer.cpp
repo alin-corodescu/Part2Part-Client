@@ -55,7 +55,7 @@ void UploadPeer::uploadFile() {
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(TRANSFERRING);
-    commandBuilder.addArgument(size);
+    commandBuilder.addArgument(size,INT);
 
     Command transfer = commandBuilder.build();
 

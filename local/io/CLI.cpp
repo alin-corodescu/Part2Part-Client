@@ -105,7 +105,7 @@ void CLI::processChose() {
 
     auto connectionHandler = ConnectionHandler::getInstance();
 
-    connectionHandler->getServer().executeCommand(command);
+    connectionHandler->getServer()->executeCommand(command);
 
 }
 
@@ -126,7 +126,11 @@ void CLI::processPublishRequest() {
     struct stat buffer;
     size_t pathLength;
     printf("Path to the file: \n");
-    getline(&path,&pathLength,stdin);
+    do {
+        getline(&path, &pathLength, stdin);
+    }while (path[0] == '\n');
+    path[strlen(path) - 1] = '\0';
+    //getline(&path,&pathLength,stdin);
     if (!stat(path,&buffer)) {
         if (S_ISREG(buffer.st_mode)) {
             char * name = basename(path);
@@ -138,11 +142,13 @@ void CLI::processPublishRequest() {
             type = strchr(name,'.');
             if (type != NULL)
                 builder->addType(type);
-            char desc[DESC_LEGNTH];
+            char * desc;
+            desc = (char *) malloc(DESC_LEGNTH);
             size_t desc_length;
             printf("Description:");
-            getline((char**)&desc,&desc_length,stdin);
+            getline(&desc,&desc_length,stdin);
             builder->addDescription(desc);
+            free(desc);
             Publisher::getInstance()->publish(*builder->build());
         }
         else

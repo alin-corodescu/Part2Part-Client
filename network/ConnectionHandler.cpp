@@ -80,8 +80,8 @@ void ConnectionHandler::_acceptNATTraversal(const Address &a) {
     peer->start();
 }
 
-Server &ConnectionHandler::getServer() {
-    return *server;
+Server* ConnectionHandler::getServer() {
+    return server;
 }
 
 int ConnectionHandler::connectToServer(Address serverAddress) {
@@ -100,10 +100,12 @@ int ConnectionHandler::connectToServer(Address serverAddress) {
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(JOIN);
-    commandBuilder.addArgument((unsigned short)LISTENING_PORT);
-    commandBuilder.addArgument(privateIP);
+    commandBuilder.addArgument((static_cast<unsigned short>(LISTENING_PORT)),SHORT);
+    commandBuilder.addArgument(privateIP,INT);
     Command join = commandBuilder.build();
+
     server->executeCommand(join);
+
     publicIP = server->getPublicIP();
 
     server->listenForCommands();

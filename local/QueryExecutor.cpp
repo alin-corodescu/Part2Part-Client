@@ -15,7 +15,7 @@ void QueryExecutor::execute() {
     Command command = commandBuilder.build();
 
     ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
-    connectionHandler->getServer().executeCommand(command);
+    connectionHandler->getServer()->executeCommand(command);
 }
 
 QueryExecutor::QueryExecutor(FileDescription query) {

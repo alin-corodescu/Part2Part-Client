@@ -41,14 +41,14 @@ void NATTraversalUtils::obtainNATPort(Address &a, int socket) {
 
     //establish ephemere server connection
     ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
-    Address serverAddress =  connectionHandler->getServer().getAddress();
+    Address serverAddress =  connectionHandler->getServer()->getAddress();
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(NOTIFIY);
-    commandBuilder.addArgument(a.getPublicIP());
-    commandBuilder.addArgument(a.getPublicPort());
-    commandBuilder.addArgument(a.getPrivateIP());
-    commandBuilder.addArgument(a.getPublicPort());
+    commandBuilder.addArgument(a.getPublicIP(),INT);
+    commandBuilder.addArgument(a.getPublicPort(),SHORT);
+    commandBuilder.addArgument(a.getPrivateIP(),INT);
+    commandBuilder.addArgument(a.getPublicPort(),SHORT);
 
 
     Command notification = commandBuilder.build();
@@ -108,14 +108,14 @@ int NATTraversalUtils::holePunch(Address peer, int requester, int accepter) {
 void NATTraversalUtils::notify(const Address &a, int server) {
     //establish ephemere server connection
     ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
-    Address serverAddress =  connectionHandler->getServer().getAddress();
+    Address serverAddress =  connectionHandler->getServer()->getAddress();
 
     CommandBuilder commandBuilder;
     commandBuilder.setType(NOTIFIY);
-    commandBuilder.addArgument(a.getPublicIP());
-    commandBuilder.addArgument(a.getPublicPort());
-    commandBuilder.addArgument(a.getPrivateIP());
-    commandBuilder.addArgument(a.getPublicPort());
+    commandBuilder.addArgument(a.getPublicIP(),INT);
+    commandBuilder.addArgument(a.getPublicPort(),SHORT);
+    commandBuilder.addArgument(a.getPrivateIP(),INT);
+    commandBuilder.addArgument(a.getPublicPort(),SHORT);
 
     Command notification = commandBuilder.build();
 
