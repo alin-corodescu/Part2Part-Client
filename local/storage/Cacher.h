@@ -24,24 +24,24 @@ private:
      * reads a cached file description and updates
      * the private members of the class
      */
-    FileDescription readFileDescription(const char* path);
+    FileDescription* readFileDescription(const char* path);
 public:
-    std::vector<FileDescription> loadFilesFromCache();
+    std::vector<FileDescription*> loadFilesFromCache();
 
-    void cacheFile(FileDescription,const char*);
+    void cacheFile(FileDescription*,const char*);
 
     void setServerIdentifier(Address);
 
     // the publisher will need to publish this new file
-    void registerNewFile(FileDescription fileDescription,const char* path,bool shouldCache = 1);
+    void registerNewFile(FileDescription *fileDescription,const char* path,bool shouldCache = 1);
 
-    void unregisterFile(FileDescription description);
+    void unregisterFile(FileDescription *description);
 
     /**
      * returns the path of the file described
      * @param fileDescription
      */
-    const char* getPathForFile(FileDescription fileDescription);
+    const char* getPathForFile(FileDescription *fileDescription);
 
     static Cacher* getInstance();
 };

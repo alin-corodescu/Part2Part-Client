@@ -12,10 +12,12 @@
 
 class ResultsDisplayer {
 private:
-    std::map<int,FileDescription> indexMap;
+    static ResultsDisplayer* instance;
+    std::map<int,FileDescription*> indexMap;
 public:
-    void display(std::vector<FileDescription>);
-    FileDescription getFDForIndex(int index);
+    void display(std::vector<FileDescription*>);
+    FileDescription* getFDForIndex(int index);
+    static ResultsDisplayer* getInstance();
 };
 
 

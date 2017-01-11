@@ -13,7 +13,7 @@ void PeerConnector::start()
      * attempt to connect to peers
      * in order to obtain the file
      */
-    std::thread([=] {_attemptConnections();});
+    new std::thread([=] {_attemptConnections();});
     return;
 }
 
@@ -25,11 +25,11 @@ void PeerConnector::_attemptConnections() {
     {
         try{
             DownloadPeer *peer = connectionHandler->connectToPeer(addresses[i]);
-            peer->setFileDescription(fileDescription);
+            peer->setFileDescription(&fileDescription);
             peer->start();//ce fac in cazul in care imi da resource not found?
             //cazul in care ma conectez din greseala la un pc local
             //TODO : treat this case
-            break;
+            return;
         }
         catch(...)
         {
@@ -42,9 +42,9 @@ void PeerConnector::_attemptConnections() {
         {
             try{
                 DownloadPeer *peer = connectionHandler->attemptNATTraversal(addresses[i]);
-                peer->setFileDescription(fileDescription);
+                peer->setFileDescription(&fileDescription);
                 peer->start();
-                break;
+                return;
             }
             catch(...)
             {
@@ -54,6 +54,7 @@ void PeerConnector::_attemptConnections() {
     }
     if (i == addresses.size())
     {
+        fprintf(stderr,"Downloading file %s failed\n",fileDescription.getFileName().data());
         //aiurea, nu ma pot conecta;
     }
 }

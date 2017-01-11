@@ -15,7 +15,7 @@
 void UploadPeer::listenForCommand() {
     char* command;
 
-    command = readString(socketDescriptor,13);
+    command = readString(socketDescriptor,COMM_LENGTH);
 
     if (strcmp(command, commandName(PROVIDE)))
     {
@@ -33,7 +33,7 @@ void UploadPeer::listenForCommand() {
     free(fdString);
 
     Cacher *cacher = Cacher::getInstance();
-    path = cacher->getPathForFile(*fileDescription);
+    path = cacher->getPathForFile(fileDescription);
     free(command);
 }
 
@@ -57,11 +57,11 @@ void UploadPeer::uploadFile() {
     commandBuilder.setType(TRANSFERRING);
     commandBuilder.addArgument(size,INT);
 
-    Command transfer = commandBuilder.build();
+    Command *transfer = commandBuilder.build();
 
     _sendCommand(transfer);
 
-    FileReader *reader = new FileReader(path,*fileDescription);
+    FileReader *reader = new FileReader(path,fileDescription);
     FileUploader *uploader = new FileUploader(reader,socketDescriptor);
 
     uploader->upload();

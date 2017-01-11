@@ -15,6 +15,7 @@ using namespace std;
 #include "CommandBuilder.h"
 #include "../../network/ConnectionHandler.h"
 #include "../Publisher.h"
+#include "../storage/Cacher.h"
 
 void CLI::init() {
     printf("Welcome to Part2Part!\n");
@@ -61,22 +62,32 @@ Address* CLI::requestServerAddress() {
 void CLI::processQuery() {
     char name[50];
     int fileSize;
-    char *desc = NULL, *type = NULL; size_t descSize = 0, typeSize = 0;
+    char *desc = NULL, *type = NULL; size_t descSize = 500, typeSize = 20;
 
     printf("Name of the file to be searched:\n");
     scanf("%s", name);
 
     printf("Description of the file [optional]:\n");
-    getline(&desc,&descSize,stdin);
+    do {
+        getline(&desc, &descSize, stdin);
+    } while (desc[0] == '\n');
 
     printf("Type of the file [optional]: \n");
-    getline(&type, &typeSize, stdin);
+    do {
+        getline(&type, &typeSize, stdin);
+    } while (type[0] == '\n');
 
     printf("Size of the file [0=default]: \n");
     scanf("%d",&fileSize);
 
     FileDescription *query;
-    QueryExecutor *executor = new QueryExecutor(*query);
+    FileDescriptionBuilder builder;
+    builder.init();
+    builder.addSize(fileSize);
+    builder.addName(name);
+    builder.addDescription(desc);
+    builder.addType(type);
+    QueryExecutor *executor = new QueryExecutor(builder.build());
     executor->execute();
 
 }
@@ -84,11 +95,11 @@ void CLI::processQuery() {
 void CLI::processChose() {
 
     int index;
-    ResultsDisplayer resultsDisplayer;
+    ResultsDisplayer* resultsDisplayer = ResultsDisplayer::getInstance();
     scanf("%d",&index);
     FileDescription *fileDescription;
     try {
-        fileDescription = new FileDescription(resultsDisplayer.getFDForIndex(index));
+        fileDescription = resultsDisplayer->getFDForIndex(index);
     }
     catch (exception& e){
         printf("Please try another index\n");
@@ -101,7 +112,7 @@ void CLI::processChose() {
 
     commandBuilder.addArgument(fileDescription);
 
-    Command command = commandBuilder.build();
+    Command *command = commandBuilder.build();
 
     auto connectionHandler = ConnectionHandler::getInstance();
 
@@ -119,18 +130,18 @@ void CLI::showHelp() {
 }
 
 void CLI::processPublishRequest() {
-#define DESC_LEGNTH 500
+    #define DESC_LEGNTH 500
     FileDescription* fileDescription;
     FileDescriptionBuilder * builder = new FileDescriptionBuilder();
     char * path = NULL;
     struct stat buffer;
-    size_t pathLength;
+    size_t pathLength = 255;
     printf("Path to the file: \n");
     do {
         getline(&path, &pathLength, stdin);
     }while (path[0] == '\n');
     path[strlen(path) - 1] = '\0';
-    //getline(&path,&pathLength,stdin);
+
     if (!stat(path,&buffer)) {
         if (S_ISREG(buffer.st_mode)) {
             char * name = basename(path);
@@ -138,18 +149,24 @@ void CLI::processPublishRequest() {
             builder->addSize(buffer.st_size);
             builder->addName(name);
             builder->addHash(IntegrityChecker::hashForFile(path).data());
+
             char * type;
             type = strchr(name,'.');
             if (type != NULL)
                 builder->addType(type);
+
             char * desc;
             desc = (char *) malloc(DESC_LEGNTH);
-            size_t desc_length;
+            size_t desc_length = DESC_LEGNTH;
             printf("Description:");
             getline(&desc,&desc_length,stdin);
+            desc[strlen(desc)-1] = '\0';
             builder->addDescription(desc);
             free(desc);
-            Publisher::getInstance()->publish(*builder->build());
+            FileDescription *file = Publisher::getInstance()->publish(builder->build());
+
+            Cacher* cacher = Cacher::getInstance();
+            cacher->cacheFile(file,path);
         }
         else
         {

@@ -25,7 +25,7 @@ private:
     CommandParser incomingCommandParser;
     int _socketDescriptor;
     bool connected;
-    std::queue<Command> commandQueue;
+    static std::queue<Command*> *commandQueue;
     void _hearbeats();
 protected:
     /**
@@ -34,7 +34,7 @@ protected:
      * NOTE: will NOT release the lock
      * until it receives the confirmation (TBD)
      */
-    void _executeCommand(Command command);
+    void _executeCommand(Command* command);
     /**
      * function used to pop Commands from the
      * queue and send them to the server
@@ -57,7 +57,7 @@ public:
      * to reduce thread concurrency problems
      * @param command
      */
-    void executeCommand(Command command);
+    void executeCommand(Command* command);
 
     /**
      * start-up function for the server,

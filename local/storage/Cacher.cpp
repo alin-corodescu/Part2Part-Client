@@ -10,8 +10,8 @@
 
 Cacher* Cacher::instance = NULL;
 
-std::vector<FileDescription> Cacher::loadFilesFromCache() {
-    std::vector<FileDescription> files;
+std::vector<FileDescription*> Cacher::loadFilesFromCache() {
+    std::vector<FileDescription*> files;
     char path[100] = CACHE_LOCATION;
     strcat(path,"/");
     DIR* d;
@@ -24,9 +24,9 @@ std::vector<FileDescription> Cacher::loadFilesFromCache() {
                 strcat(path, element->d_name);
                 FileDescription *fileDescription;
                 try {
-                    fileDescription = new FileDescription(readFileDescription(path));
-                    files.push_back(*fileDescription);
-                    delete fileDescription;
+                    fileDescription = readFileDescription(path);
+                    files.push_back(fileDescription);
+                    //delete fileDescription;
                 }
                 catch (...) {
                     element = readdir(d);
@@ -54,9 +54,9 @@ Cacher::Cacher() {
 
 }
 
-void Cacher::registerNewFile(FileDescription fileDescription, const char *path,bool shouldCache) {
+void Cacher::registerNewFile(FileDescription *fileDescription, const char *path,bool shouldCache) {
     std::string *spath = new std::string(path);
-    filePaths.insert(std::make_pair(fileDescription,*spath));
+    filePaths.insert(std::make_pair(*fileDescription,*spath));
     if (shouldCache) cacheFile(fileDescription,path);
     delete spath;
 
@@ -66,30 +66,32 @@ void Cacher::setServerIdentifier(Address address) {
     this->serverAddr = new Address(address);
 }
 
-const char *Cacher::getPathForFile(FileDescription fileDescription) {
-    const char* path = filePaths.at(fileDescription).data();
+const char *Cacher::getPathForFile(FileDescription *fileDescription) {
+    const char* path = filePaths.at(*fileDescription).data();
     return path;
 }
 
-void Cacher::cacheFile(FileDescription fd,const char* file_path) {
+void Cacher::cacheFile(FileDescription* fd,const char* file_path) {
     char path[100] = CACHE_LOCATION;
-    std::string hash = fd.getHash();
+    std::string hash = fd->getHash();
     strcat(path, "/");
     strcat(path, hash.data());
 
     FILE* out = fopen(path,"w");
-    fprintf(out,"%s\n",file_path);
-    fprintf(out,"%s\n",fd.toString().data());
+    int rc = fprintf(out,"%s\n",file_path);
+    fprintf(out,"%s",fd->toString().data());
+    fflush(out);
+    fclose(out);
 }
 
-void Cacher::unregisterFile(FileDescription description) {
+void Cacher::unregisterFile(FileDescription* description) {
     char path[100] = CACHE_LOCATION;
-    std::string hash = description.getHash();
+    std::string hash = description->getHash();
     strcat(path, "/");
     strcat(path, hash.data());
 
     remove(path);
-    filePaths.erase(description);
+    filePaths.erase(*description);
 }
 
 void Cacher::_removeFileNameFromPath(char * path) {
@@ -102,30 +104,35 @@ void Cacher::_removeFileNameFromPath(char * path) {
 
 }
 
-FileDescription Cacher::readFileDescription(const char *path) {
+FileDescription* Cacher::readFileDescription(const char *path) {
     FILE* in = fopen(path,"r");
 
     char *buffer = NULL;
-    size_t pathLength;
+    size_t pathMaxLength = 255;
 
-    getline(&buffer,&pathLength,in);
+    getline(&buffer,&pathMaxLength,in);
 
-    char* pathToFile = (char*) malloc(pathLength);
+    char* pathToFile = (char*) malloc(strlen(buffer));
     strcpy(pathToFile,buffer);
     free(buffer);
+    int pathLength = strlen(pathToFile);
+    if (pathToFile[pathLength- 1] == '\n')
+        pathToFile[pathLength - 1] = '\0';
 
-    if (pathToFile[pathLength-1] == '\n')
-        pathToFile[--pathLength] = '\0';
+    /*long size = ftell(in);
+    int rc = fseek(in,0,SEEK_END);
+    long size2 = ftell(in);*/
 
-    FileDescriptionBuilder *builder = new FileDescriptionBuilder();
-    FileDescription *fileDescription = builder->readFromFile(in);
+    FileDescriptionBuilder builder;
+    FileDescription *fileDescription = builder.readFromFile(in);
 
-    delete builder;
+
     if (IntegrityChecker::checkIntegrity(*fileDescription,pathToFile))
-        registerNewFile(*fileDescription,pathToFile,0);
+        registerNewFile(fileDescription,pathToFile,0);
     else
         throw;
 
     free(pathToFile);
 
+    return fileDescription;
 }

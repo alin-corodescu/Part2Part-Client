@@ -10,13 +10,14 @@
 #include "../local/storage/FileWriter.h"
 #include "../local/storage/FileDownloader.h"
 
-
+#define PATH_MAX 512
+#define DOWNLOAD_LOCATION "/home/alin/part2part_dwld/"
 void DownloadPeer::request() {
     CommandBuilder commandBuilder;
 
     commandBuilder.setType(PROVIDE);
     commandBuilder.addArgument(fileDescription);
-    Command request = commandBuilder.build();
+    Command *request = commandBuilder.build();
 
     _sendCommand(request);
 }
@@ -24,7 +25,7 @@ void DownloadPeer::request() {
 void DownloadPeer::listenForCommand() {
     char* command;
 
-    command = readString(socketDescriptor,13);
+    command = readString(socketDescriptor,COMM_LENGTH);
 
     if (strcmp(command, commandName(TRANSFERRING)))
     {
@@ -57,4 +58,10 @@ void DownloadPeer::downloadFile() {
 
 DownloadPeer::DownloadPeer(int socket,FileDescription *fileDescription) : PeerConnection(fileDescription) {
     this->setSocketDescriptor(socket);
+}
+
+void DownloadPeer::setFileDescription(FileDescription *description) {
+    fileDescription = description;
+    dst = (char*) malloc(PATH_MAX);
+    sprintf(dst,DOWNLOAD_LOCATION"%s",fileDescription->getFileName().data());
 }

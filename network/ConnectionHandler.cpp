@@ -17,9 +17,12 @@ ConnectionHandler* ConnectionHandler::instance = NULL;
 
 DownloadPeer * ConnectionHandler::connectToPeer(Address a) {
     int socketDescriptor;
-    int ip = a.getPublicIP();
-    short port = a.getPublicPort();
-    socketDescriptor = connectTo(ip,port);
+    unsigned int ip = a.getPublicIP();
+    unsigned short port = a.getPublicPort();
+    try {
+        socketDescriptor = connectTo(ip, port);
+    }
+    catch(const char * e) {socketDescriptor = -1;}
     if (socketDescriptor == -1)
     {
         if (ip == publicIP) {
@@ -102,7 +105,7 @@ int ConnectionHandler::connectToServer(Address serverAddress) {
     commandBuilder.setType(JOIN);
     commandBuilder.addArgument((static_cast<unsigned short>(LISTENING_PORT)),SHORT);
     commandBuilder.addArgument(privateIP,INT);
-    Command join = commandBuilder.build();
+    Command *join = commandBuilder.build();
 
     server->executeCommand(join);
 
@@ -110,7 +113,7 @@ int ConnectionHandler::connectToServer(Address serverAddress) {
 
     server->listenForCommands();
 
-    server->heartbeats();
+    //server->heartbeats();
 
     return 0;
 
@@ -160,7 +163,7 @@ void ConnectionHandler::_startService() {
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    addr.sin_port = LISTENING_PORT;
+    addr.sin_port = htons(LISTENING_PORT);
 
     if (bind(listeningSocket,(struct sockaddr*) &addr,sizeof(struct sockaddr)) == -1)
     {
@@ -168,7 +171,7 @@ void ConnectionHandler::_startService() {
     }
 
     //now the socket is bound
-
+    listen(listeningSocket,5);
     while (alive)
     {
         int peer;

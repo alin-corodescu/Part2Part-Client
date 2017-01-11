@@ -19,7 +19,7 @@ void FileWriter::finish()
     delete file;
 
     Cacher *cacher = Cacher::getInstance();
-    cacher->registerNewFile(fileDescription,path);
+    cacher->registerNewFile(&fileDescription,path);
 }
 
 FileWriter::FileWriter(char *path, FileDescription fileDescription) {

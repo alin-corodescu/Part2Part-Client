@@ -12,10 +12,10 @@
 
 class FileReader {
     const char* path;
-    FileDescription fileDescription;
+    FileDescription* fileDescription;
     std::ifstream in;
 public:
-    FileReader(const char* path,FileDescription fileDescription);
+    FileReader(const char* path,FileDescription* fileDescription);
     /**
      * reads next chunk of the file,
      * @param buffer

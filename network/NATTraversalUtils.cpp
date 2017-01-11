@@ -51,7 +51,7 @@ void NATTraversalUtils::obtainNATPort(Address &a, int socket) {
     commandBuilder.addArgument(a.getPublicPort(),SHORT);
 
 
-    Command notification = commandBuilder.build();
+    Command *notification = commandBuilder.build();
 
     //establish a new connection with the server.
     connectThrough(socket, serverAddress.getPublicIP(),serverAddress.getPublicPort());
@@ -117,7 +117,7 @@ void NATTraversalUtils::notify(const Address &a, int server) {
     commandBuilder.addArgument(a.getPrivateIP(),INT);
     commandBuilder.addArgument(a.getPublicPort(),SHORT);
 
-    Command notification = commandBuilder.build();
+    Command *notification = commandBuilder.build();
 
     //establish a new connection with the server.
     connectThrough(server, serverAddress.getPublicIP(),serverAddress.getPublicPort());

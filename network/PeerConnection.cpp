@@ -4,27 +4,35 @@
 
 #include <CommandBuilder.h>
 #include <thread>
+#include <IOWrappers.h>
 #include "PeerConnection.h"
 
 
-void PeerConnection::_sendCommand(Command command) {
-
+void PeerConnection::_sendCommand(Command* command) {
+    int size;
+    size = command->length();
+    char *string = (char*) malloc(size);
+    command->toString(string);
+    writeString( socketDescriptor,string, size);
+    free(string);
+    delete command;
 }
 
 void PeerConnection::setSocketDescriptor(int socketDescriptor) {
     PeerConnection::socketDescriptor = socketDescriptor;
 }
 
-void PeerConnection::setFileDescription(const FileDescription &fileDescription) {
-    PeerConnection::fileDescription = new FileDescription(fileDescription);
+void PeerConnection::setFileDescription(FileDescription *fileDescription) {
+    PeerConnection::fileDescription = fileDescription;
+
 }
 
 PeerConnection::PeerConnection(FileDescription *fileDescription) {
     if (fileDescription != NULL)
-        this->fileDescription = new FileDescription(*fileDescription);
+        this->fileDescription = fileDescription;
 
 }
 
 void PeerConnection::start() {
-    std::thread([=] {_start();});
+    new std::thread([=] {_start();});
 }

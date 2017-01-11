@@ -12,6 +12,7 @@
 
 std::mutex Server::qMutex;
 std::mutex Server::clockMutex;
+std::queue<Command*> *Server::commandQueue = new std::queue<Command*>();
 void Server::_listenForCommands() {
     /**
      * commands will be parsed on the thread of this function
@@ -23,7 +24,7 @@ void Server::_listenForCommands() {
     {
 
         command = readString(_socketDescriptor,COMM_LENGTH);
-
+        printf("Received command -%s-\n",command);
         if (!strcmp(command, commandName(RESULTS))) {
             incomingCommandParser.parseResults();
         }
@@ -52,31 +53,32 @@ void Server::_processCommandQueue() {
     {
         std::lock_guard<std::mutex> lck(qMutex);
 
-        bool isEmpty = commandQueue.empty();
+        bool isEmpty = commandQueue->empty();
         while (!isEmpty)
         {
-            Command next = commandQueue.front();
-            commandQueue.pop();
+            Command* next = commandQueue->front();
+            commandQueue->pop();
 
             _executeCommand(next);
 
-            isEmpty = commandQueue.empty();
+            isEmpty = commandQueue->empty();
         }
     }
 }
 
 Server::Server(int socket,Address serverAddress) : address(serverAddress), incomingCommandParser(socket){
     this->_socketDescriptor = socket;
+    //commandQueue = new std::queue<Command*> ();
 }
 
-void Server::_executeCommand(Command command) {
+void Server::_executeCommand(Command* command) {
     int size;
-    size = command.length();
+    size = command->length();
     char *string = (char*) malloc(size);
-    command.toString(string);
+    command->toString(string);
     writeString(_socketDescriptor,string, size);
     free(string);
-
+    delete command;
     std::lock_guard<std::mutex> lck(clockMutex);
     last_command = std::chrono::steady_clock::now();
 }
@@ -109,10 +111,11 @@ void Server::processCommandQueue() {
 
 }
 
-void Server::executeCommand(Command command) {
+void Server::executeCommand(Command* command) {
 
     std::lock_guard<std::mutex> lck(qMutex);
-    commandQueue.push(command);
+    printf("Queue size = %d\n",commandQueue->size());
+    commandQueue->push(command);
 }
 
 void Server::listenForCommands() {
@@ -137,7 +140,7 @@ void Server::_hearbeats() {
         if (timeElpased.count() > HEARTBEAT_INTERVAL) {
             CommandBuilder *commandBuilder = new CommandBuilder();
             commandBuilder->setType(HEARTBEAT);
-            Command heartbeat = commandBuilder->build();
+            Command *heartbeat = commandBuilder->build();
             executeCommand(heartbeat);
             delete commandBuilder;
             last_command = steady_clock::now();

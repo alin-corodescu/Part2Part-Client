@@ -12,27 +12,26 @@
 #include "../network/PeerConnector.h"
 #include "../network/ConnectionHandler.h"
 
-FileDescription CommandParser::readFileDescription() {
+FileDescription* CommandParser::readFileDescription() {
     FileDescriptionBuilder *fileDescriptionBuilder = new FileDescriptionBuilder();
     FileDescription *fileDescription;
 
     unsigned int fdSize;
     readUInt(socketDescriptor, fdSize);
     char *fileDescriptionString;
-    readUInt(socketDescriptor, fdSize);
 
     fileDescriptionString = readString(socketDescriptor, fdSize);
     fileDescription = fileDescriptionBuilder->buildFromString(fileDescriptionString);
     free(fileDescriptionString);
 
     delete fileDescriptionBuilder;
-    return *fileDescription;
+    return fileDescription;
 }
 
 void CommandParser::parseResults() {
     unsigned int number_of_matches;
     unsigned int i;
-    std::vector<FileDescription> results;
+    std::vector<FileDescription*> results;
 
     FileDescriptionBuilder fileDescriptionBuilder;
     readUInt(socketDescriptor, number_of_matches);
@@ -41,22 +40,22 @@ void CommandParser::parseResults() {
 
         FileDescription *fileDescription;
 
-        *fileDescription = readFileDescription();
+        fileDescription = readFileDescription();
 
-        results.push_back(*fileDescription);
+        results.push_back(fileDescription);
 
     }
 
     //pass the results to the results displayer
 
-    ResultsDisplayer resultsDisplayer;
+    ResultsDisplayer* resultsDisplayer = ResultsDisplayer::getInstance();
 
-    resultsDisplayer.display(results);
+    resultsDisplayer->display(results);
 
 }
 
 void CommandParser::parseRequestFileFrom() {
-    FileDescription fileDescription = readFileDescription();
+    FileDescription* fileDescription = readFileDescription();
     unsigned int i;
     unsigned int numberOfPeers;
     std::vector<Address> addresses;
@@ -77,7 +76,7 @@ void CommandParser::parseRequestFileFrom() {
         delete (a);
     }
 
-    PeerConnector *peerConnector = new PeerConnector(&fileDescription, addresses);
+    PeerConnector *peerConnector = new PeerConnector(fileDescription, addresses);
 
     peerConnector->start();
 }

@@ -4,19 +4,29 @@
 
 #include "ResultsDisplayer.h"
 
-void ResultsDisplayer::display(std::vector<FileDescription> fds) {
+
+ResultsDisplayer* ResultsDisplayer::instance;
+
+void ResultsDisplayer::display(std::vector<FileDescription*> fds) {
 
     int i;
     indexMap.clear();
     for (i = 0; i < fds.size(); i++)
     {
-        indexMap.insert(std::make_pair(i,fds[i]));
+        indexMap.insert(std::make_pair(i + 1,fds[i]));
 
         printf("1 : \n");
-        printf("\tName: %s\n",fds[i].getFileName());
+        printf("\tName: %s\n",fds[i]->getFileName().data());
     }
 }
 
-FileDescription ResultsDisplayer::getFDForIndex(int index) {
-    return indexMap.at(index);
+FileDescription* ResultsDisplayer::getFDForIndex(int index) {
+    FileDescription* fileDescription =  indexMap.find(index)->second;
+    return fileDescription;
+}
+
+ResultsDisplayer *ResultsDisplayer::getInstance() {
+    if (instance == NULL)
+        instance = new ResultsDisplayer();
+    return instance;
 }

@@ -15,7 +15,7 @@ class QueryExecutor {
 private:
     FileDescription *query;
 public:
-    QueryExecutor(FileDescription query);
+    QueryExecutor(FileDescription* query);
 
     void execute();
 };

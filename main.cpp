@@ -43,7 +43,7 @@ int setup()
 
     cacher->setServerIdentifier(*serverAddress);
 
-    vector<FileDescription> lastSessionFiles = cacher -> loadFilesFromCache();
+    vector<FileDescription*> lastSessionFiles = cacher -> loadFilesFromCache();
 
     //TODO: integrity check here
 

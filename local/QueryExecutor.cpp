@@ -12,12 +12,14 @@ void QueryExecutor::execute() {
 
     commandBuilder.setType(CommandTypes::QUERY);
     commandBuilder.addArgument(this->query);
-    Command command = commandBuilder.build();
+    Command *command = commandBuilder.build();
 
     ConnectionHandler *connectionHandler = ConnectionHandler::getInstance();
     connectionHandler->getServer()->executeCommand(command);
+
+    delete query;
 }
 
-QueryExecutor::QueryExecutor(FileDescription query) {
-    this -> query = new FileDescription(query);
+QueryExecutor::QueryExecutor(FileDescription* query) {
+    this -> query = query;
 }

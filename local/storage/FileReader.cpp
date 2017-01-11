@@ -5,7 +5,7 @@
 #include "FileReader.h"
 #include "FileUploader.h"
 
-FileReader::FileReader(const char *path, FileDescription fileDescription) : in(path) {
+FileReader::FileReader(const char *path, FileDescription *fileDescription) : in(path) {
     this ->path = path;
     this->fileDescription = fileDescription;
 

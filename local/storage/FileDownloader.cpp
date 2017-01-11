@@ -23,12 +23,13 @@ void FileDownloader::download() {
     {
         unsigned int next_block;
         next_block = BLK_SIZE;
-        if (done - size < BLK_SIZE)
-            next_block = done - size;
+        if (size - done < BLK_SIZE)
+            next_block = size - done;
         buffer = readString(socketDescriptor,next_block);
         fileWriter -> append(buffer, next_block);
         done += next_block;
     }
+    printf("Downloaded %d bytes\n",size);
     fileWriter->finish();
     delete fileWriter;
 

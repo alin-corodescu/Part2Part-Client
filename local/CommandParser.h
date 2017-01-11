@@ -10,7 +10,7 @@ class CommandParser {
     friend class Server;
 private:
     int socketDescriptor;
-    FileDescription readFileDescription();
+    FileDescription* readFileDescription();
 protected:
     CommandParser(int socketDescriptor);
 public:

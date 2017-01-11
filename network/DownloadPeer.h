@@ -12,6 +12,8 @@ class DownloadPeer : public PeerConnection {
 public:
     DownloadPeer(int socket, FileDescription* fileDescription = NULL);
 
+    virtual void setFileDescription(FileDescription *description) override;
+
 protected:
     virtual int _start() override;
     virtual void listenForCommand() override;

@@ -24,13 +24,13 @@ public:
      * @tag separate thread
      * @param files
      */
-    void publish(std::vector<FileDescription> files);
+    void publish(std::vector<FileDescription*> files);
 
     /**
      * @tag separate thread
      * @param file
      */
-    void publish(FileDescription file);
+    FileDescription* publish(FileDescription* file);
 
     static Publisher* getInstance();
 };

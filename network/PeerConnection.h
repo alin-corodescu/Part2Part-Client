@@ -14,7 +14,7 @@ class PeerConnection {
 protected:
     FileDescription *fileDescription;
 public:
-    void setFileDescription(const FileDescription &fileDescription);
+    virtual void setFileDescription(FileDescription*);
     PeerConnection(FileDescription* fileDescription = NULL);
 
 protected:
@@ -23,7 +23,7 @@ public:
     void setSocketDescriptor(int socketDescriptor);
 
 protected:
-    virtual void _sendCommand(Command command);
+    virtual void _sendCommand(Command* command);
     virtual void listenForCommand() = 0;
     virtual int _start() = 0;
 public:

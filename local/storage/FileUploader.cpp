@@ -20,6 +20,7 @@ void FileUploader::upload() {
     {
         count = reader->nextBlock(buffer);
         writeString(socket,buffer,count);
+        printf("Uploaded %d bytes\n",count);
     }
     while (count);
     reader->finish();
